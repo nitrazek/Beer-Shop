@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
     <!-- Define Persistence Unit -->
-    <persistence-unit name="my_persistence_unit">
-        
+    <persistence-unit name="PU">
+        <class>pl.wipb.beershop.models.Product</class>
+        <class>pl.wipb.beershop.models.Account</class>
+        <class>pl.wipb.beershop.models.Order</class>
+        <class>pl.wipb.beershop.models.OrderProduct</class>
+        <properties>
+            <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
+            <property name="jakarta.persistence.sql-load-script-source" value="META-INF/initial-data.sql"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
+        </properties>
     </persistence-unit>
 </persistence>
