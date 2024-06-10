@@ -23,4 +23,12 @@ public class Product {
 
     @Column(nullable = false)
     private BigDecimal price;
+
+    public Product() {};
+
+    public Product(String name, ProductCategory category, BigDecimal price) {
+        this.name = name;
+        this.category = category;
+        this.price = price;
+    }
 }

@@ -1,11 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: pawel
-  Date: 05.06.2024
-  Time: 18:41
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <html>
 <head>
     <title>Rejestracja</title>
@@ -15,25 +11,25 @@
 <body>
 
 <div class="wrapper">
-    <form action="post">
+    <form method="post">
         <h1>Zarejestruj się</h1>
         <div class="input-box">
-            <input type="text" placeholder="Login" required>
+            <input name="login" value="${fn:escapeXml(login)}" type="text" placeholder="Login" required>
             <i class="bx bxs-user"></i>
         </div>
 
         <div class="input-box">
-            <input type="text" placeholder="Email" required>
+            <input name="email" value="${fn:escapeXml(email)}" type="text" placeholder="Email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
             <i class="bx bxs-user"></i>
         </div>
 
         <div class="input-box">
-            <input type="password" placeholder="Hasło" required>
+            <input name="password" type="password" placeholder="Hasło" required>
             <i class="bx bxs-lock-alt"></i>
         </div>
 
         <div class="input-box">
-            <input type="password" placeholder="Powtórz hasło" required>
+            <input name="confirm_password" type="password" placeholder="Powtórz hasło" required>
             <i class="bx bxs-lock-alt"></i>
         </div>
 
@@ -42,6 +38,15 @@
         <div class="register-link">
             <p>Masz już konto? <a href="/beershop/login">Zaloguj się</a></p>
         </div>
+        <c:if test = "${not empty errors.login}">
+            <td><span class="error">${errors.login}</span></td>
+        </c:if>
+        <c:if test = "${not empty errors.password}">
+            <td><span class="error">${errors.password}</span></td>
+        </c:if>
+        <c:if test = "${not empty errors.account}">
+            <td><span class="error">${errors.account}</span></td>
+        </c:if>
     </form>
 </div>
 </body>

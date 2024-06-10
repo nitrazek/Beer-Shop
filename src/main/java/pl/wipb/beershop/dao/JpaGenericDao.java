@@ -13,7 +13,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 
-@Stateless
 public class JpaGenericDao<T, K> implements GenericDao<T, K> {
     @PersistenceContext(name = "PU")
     protected EntityManager em;
@@ -28,24 +27,18 @@ public class JpaGenericDao<T, K> implements GenericDao<T, K> {
 
     @Override
     public void save(T t) {
-        em.getTransaction().begin();
         em.persist(t);
-        em.getTransaction().commit();
     }
 
     @Override
     public void delete(T t) {
-        em.getTransaction().begin();
         t = em.merge(t);
         em.remove(t);
-        em.getTransaction().commit();
     }
 
     @Override
     public void update(T t) {
-        em.getTransaction().begin();
         em.merge(t);
-        em.getTransaction().commit();
     }
 
     @Override

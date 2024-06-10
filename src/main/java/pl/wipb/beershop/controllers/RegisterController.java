@@ -15,8 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@WebServlet("/login")
-public class LoginController extends HttpServlet {
+@WebServlet("/register")
+public class RegisterController extends HttpServlet {
     private final Logger log = Logger.getLogger(LoginController.class.getName());
 
     @EJB
@@ -28,19 +28,20 @@ public class LoginController extends HttpServlet {
         if(authService.verifyAccount(session))
             response.sendRedirect(request.getContextPath() + "/shop/products");
         else
-            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String,String> fieldToError = new HashMap<>();
-        Account account = authService.handleLogin(request.getParameterMap(), fieldToError);
+        Account account = authService.handleRegister(request.getParameterMap(), fieldToError);
 
         if(!fieldToError.isEmpty() || account == null) {
             request.setAttribute("errors", fieldToError);
             request.setAttribute("login", request.getParameter("login"));
+            request.setAttribute("email", request.getParameter("email"));
 
-            request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
             return;
         }
 

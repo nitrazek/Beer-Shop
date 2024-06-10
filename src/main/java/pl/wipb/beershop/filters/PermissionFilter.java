@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 import pl.wipb.beershop.controllers.LoginController;
 import pl.wipb.beershop.dao.interfaces.AccountDao;
 import pl.wipb.beershop.models.Account;
+import pl.wipb.beershop.services.AuthenticationService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -21,6 +22,8 @@ public class PermissionFilter extends HttpFilter {
     private final Logger log = Logger.getLogger(LoginController.class.getName());
     @EJB
     private AccountDao accountDao;
+    @EJB
+    private AuthenticationService authService;
 
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -31,20 +34,9 @@ public class PermissionFilter extends HttpFilter {
             +", pathInfo:"+request.getPathInfo()
         );
 
-        HttpSession session = request.getSession(false);
-        String login = (session != null) ? (String) session.getAttribute("login") : null;
-        if (login == null) {
+        if(authService.verifyAccount(request.getSession(false)))
+            chain.doFilter(request, response);
+        else
             response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
-        Optional<Account> account = accountDao.findByLogin(login);
-        if (account.isEmpty()) {
-            session.removeAttribute("login");
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
-        }
-
-        chain.doFilter(request, response);
     }
 }

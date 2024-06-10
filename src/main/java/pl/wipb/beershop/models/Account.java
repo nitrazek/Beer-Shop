@@ -9,7 +9,10 @@ import java.util.List;
 
 @Data
 @Entity
-@NamedQuery(name = "Account.findByLogin", query = "SELECT a FROM Account a WHERE a.login = :login")
+@NamedQueries({
+        @NamedQuery(name = "Account.findByLogin", query = "SELECT a FROM Account a WHERE a.login = :login"),
+        @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email")
+})
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -26,9 +29,12 @@ public class Account {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private AccountRole role;
+    private AccountRole role = AccountRole.CLIENT;
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "account")
+    private List<CartProduct> cartProducts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "account")
     private List<Order> orders = new ArrayList<>();
 
     public Account() {}

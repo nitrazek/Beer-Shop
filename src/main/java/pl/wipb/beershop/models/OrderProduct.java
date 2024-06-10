@@ -18,5 +18,6 @@ public class OrderProduct {
     @MapsId("productId")
     private Product product;
 
+    @Column(nullable = false)
     private Integer amount;
 }

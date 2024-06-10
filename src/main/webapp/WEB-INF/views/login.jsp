@@ -1,4 +1,6 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 <head>
@@ -12,7 +14,7 @@
     <form method="post">
         <h1>Zaloguj się</h1>
         <div class="input-box">
-            <input name="login" type="text" placeholder="Login" required>
+            <input name="login" value="${fn:escapeXml(login)}" type="text" placeholder="Login" required>
             <i class="bx bxs-user"></i>
         </div>
         <div class="input-box">
@@ -23,8 +25,15 @@
         <button type="submit" class="btn">Zaloguj się</button>
     </form>
     <div class="register-link">
-        <p>Nie masz konta? <a href="#">Zarejestruj się</a></p>
+        <p>Nie masz konta? <a href="/beershop/register">Zarejestruj się</a></p>
     </div>
+    <c:if test = "${not empty errors.login}">
+    <td><span class="error">${errors.login}</span></td>
+    </c:if>
+    <c:if test = "${not empty errors.password}">
+    <td><span class="error">${errors.password}</span></td>
+    </c:if>
+
 </div>
 </body>
 </html>

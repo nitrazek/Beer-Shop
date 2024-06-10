@@ -4,7 +4,7 @@
 <html>
     <head>
         <script type="text/javascript">
-            window.location.href = "/beershop/login";
+            window.location.href = "/beershop/shop/products";
         </script>
         <title>JPA Page</title>
     </head>

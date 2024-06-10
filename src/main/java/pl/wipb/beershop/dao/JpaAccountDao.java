@@ -22,4 +22,15 @@ public class JpaAccountDao extends JpaGenericDao<Account, Long> implements Accou
             return Optional.empty();
         }
     }
+
+    public Optional<Account> findByEmail(String email) {
+        try {
+            Account account = em.createNamedQuery("Account.findByEmail", Account.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+            return Optional.of(account);
+        } catch(NoResultException ex) {
+            return Optional.empty();
+        }
+    }
 }

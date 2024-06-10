@@ -7,10 +7,9 @@
     <class>pl.wipb.beershop.models.Account</class>
     <class>pl.wipb.beershop.models.Order</class>
     <class>pl.wipb.beershop.models.OrderProduct</class>
+    <class>pl.wipb.beershop.models.CartProduct</class>
     <properties>
       <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
-      <property name="jakarta.persistence.schema-generation.create-source" value="metadata"/>
-      <property name="jakarta.persistence.sql-load-script-source" value="META-INF/initial-data.sql"/>
       <property name="eclipselink.logging.level" value="FINE"/>
     </properties>
   </persistence-unit>
