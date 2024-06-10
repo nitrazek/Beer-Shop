@@ -6,7 +6,6 @@ import pl.wipb.beershop.models.utils.OrderProductId;
 
 @Data
 @Entity
-@Table(name = "order_product")
 public class OrderProduct {
     @EmbeddedId
     private OrderProductId id;

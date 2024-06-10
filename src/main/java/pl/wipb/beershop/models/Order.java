@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "order")
+@Table(name = "\"ORDER\"")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne

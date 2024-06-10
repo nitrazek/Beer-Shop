@@ -8,11 +8,10 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name = "product")
 @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(nullable = false)
