@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>eBrowarek - Lista produktów</title>
@@ -16,7 +17,7 @@
         <c:forEach items="${productList}" var="product">
             <div class="product">
                 <h2>${product.name}</h2>
-                <p>Cena: ${product.price} PLN</p>
+                <p>Cena: <fmt:formatNumber value="${product.price}" type="number"/> PLN</p>
             </div>
         </c:forEach>
     </div>

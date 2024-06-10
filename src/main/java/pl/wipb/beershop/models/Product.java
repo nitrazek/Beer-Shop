@@ -8,7 +8,10 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p")
+@NamedQueries({
+  @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
+  @NamedQuery(name = "Product.deleteAll", query = "DELETE FROM Product")
+})
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -21,12 +24,12 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
 
-    @Column(nullable = false)
-    private BigDecimal price;
+    @Column(nullable = false, precision = 7, scale = 2)
+    private Double price;
 
     public Product() {};
 
-    public Product(String name, ProductCategory category, BigDecimal price) {
+    public Product(String name, ProductCategory category, Double price) {
         this.name = name;
         this.category = category;
         this.price = price;
