@@ -8,18 +8,16 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import pl.wipb.beershop.controllers.LoginController;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pl.wipb.beershop.dao.interfaces.AccountDao;
-import pl.wipb.beershop.models.Account;
 import pl.wipb.beershop.services.AuthenticationService;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.logging.Logger;
 
 @WebFilter("/shop/*")
 public class PermissionFilter extends HttpFilter {
-    private final Logger log = Logger.getLogger(LoginController.class.getName());
+    private static final Logger log = LogManager.getLogger();
     @EJB
     private AccountDao accountDao;
     @EJB
@@ -34,9 +32,14 @@ public class PermissionFilter extends HttpFilter {
             +", pathInfo:"+request.getPathInfo()
         );
 
-        if(authService.verifyAccount(request.getSession(false)))
+        HttpSession session = request.getSession(false);
+        String login = (session != null) ? (String) session.getAttribute("login") : null;
+
+        if(authService.verifyAccount(login))
             chain.doFilter(request, response);
-        else
+        else {
+            if (login != null) session.removeAttribute("login");
             response.sendRedirect(request.getContextPath() + "/login");
+        }
     }
 }

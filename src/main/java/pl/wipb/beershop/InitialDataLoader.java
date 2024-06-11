@@ -27,20 +27,20 @@ public class InitialDataLoader {
     public void loadInitialData() {
         log.debug("loadInitialData() started");
 
+        em.createQuery("DELETE FROM CartProduct").executeUpdate();
+        log.debug("Cleared CART_PRODUCT table");
+
+        em.createQuery("DELETE FROM OrderProduct").executeUpdate();
+        log.debug("Cleared ORDER_PRODUCT table");
+
+        em.createQuery("DELETE FROM Order").executeUpdate();
+        log.debug("Cleared \"ORDER\" table");
+
         em.createQuery("DELETE FROM Account").executeUpdate();
         log.debug("Cleared ACCOUNT table");
 
         em.createQuery("DELETE FROM Product").executeUpdate();
         log.debug("Cleared PRODUCT table");
-
-        em.createQuery("DELETE FROM CartProduct").executeUpdate();
-        log.debug("Cleared CART_PRODUCT table");
-
-        em.createQuery("DELETE FROM Order").executeUpdate();
-        log.debug("Cleared \"ORDER\" table");
-
-        em.createQuery("DELETE FROM OrderProduct").executeUpdate();
-        log.debug("Cleared ORDER_PRODUCT table");
 
         Account account1 = new Account("admin", "admin", "admin@test.com", AccountRole.ADMIN);
         log.debug("Created account1: {}", account1.toString());
@@ -79,6 +79,19 @@ public class InitialDataLoader {
         em.persist(product3);
         em.persist(product4);
         em.persist(product5);
+
+        CartProduct cartProduct1 = new CartProduct(account1, product1, 2);
+        log.debug("Created cartProduct1: {}", cartProduct1.toString());
+
+        CartProduct cartProduct2 = new CartProduct(account1, product2, 1);
+        log.debug("Created cartProduct2: {}", cartProduct2.toString());
+
+        CartProduct cartProduct3 = new CartProduct(account1, product3, 1);
+        log.debug("Created cartProduct3: {}", cartProduct3.toString());
+
+        em.persist(cartProduct1);
+        em.persist(cartProduct2);
+        em.persist(cartProduct3);
 
         log.debug("loadInitialData() finished");
     }

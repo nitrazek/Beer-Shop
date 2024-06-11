@@ -3,6 +3,7 @@ package pl.wipb.beershop.models;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.Fetch;
 import lombok.Data;
+import pl.wipb.beershop.models.utils.BaseModel;
 import pl.wipb.beershop.models.utils.OrderStatus;
 
 import java.math.BigDecimal;
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "\"ORDER\"")
-public class Order {
+public class Order extends BaseModel<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderSeq")
     @SequenceGenerator(name = "orderSeq", sequenceName = "ORDER_SEQ", allocationSize = 1)

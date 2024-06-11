@@ -58,22 +58,16 @@ public class AuthenticationService {
             return account;
         }
 
-        accountDao.save(account);
+        accountDao.saveOrUpdate(account);
         return account;
     }
 
-    public boolean verifyAccount(HttpSession session) {
-        String login = (session != null) ? (String) session.getAttribute("login") : null;
+    public boolean verifyAccount(String login) {
         if (login == null) {
             return false;
         }
 
         Optional<Account> account = accountDao.findByLogin(login);
-        if (account.isEmpty()) {
-            session.removeAttribute("login");
-            return false;
-        }
-
-        return true;
+        return account.isPresent();
     }
 }

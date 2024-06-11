@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 import pl.wipb.beershop.models.utils.AccountRole;
+import pl.wipb.beershop.models.utils.BaseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
         @NamedQuery(name = "Account.findByLogin", query = "SELECT a FROM Account a WHERE a.login = :login"),
         @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email"),
 })
-public class Account {
+public class Account extends BaseModel<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "accountSeq")
     @SequenceGenerator(name = "accountSeq", sequenceName = "ACCOUNT_SEQ", allocationSize = 1)
@@ -33,11 +34,11 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountRole role = AccountRole.CLIENT;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<CartProduct> cartProducts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Order> orders = new ArrayList<>();
 

@@ -8,12 +8,20 @@ import pl.wipb.beershop.models.utils.ProductCategory;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 
 @Stateless
 public class RequestParsers {
+    private String getFirstValueByKey(Map<String, String[]> map, String key) {
+        return Optional.ofNullable(map.get(key))
+                .filter(values -> values.length > 0)
+                .map(values -> values[0])
+                .orElse(null);
+    }
+
     public Account parseLoginParams(Map<String,String[]> paramToValue, Map<String,String> fieldToError) {
-        String login = paramToValue.get("login")[0];
-        String password = paramToValue.get("password")[0];
+        String login = getFirstValueByKey(paramToValue, "login");
+        String password = getFirstValueByKey(paramToValue, "password");
 
         if (login == null || login.trim().isEmpty()) {
             fieldToError.put("login", "Pole nazwa nie może być puste.");
@@ -27,10 +35,10 @@ public class RequestParsers {
     }
 
     public Account parseRegisterParams(Map<String,String[]> paramToValue, Map<String,String> fieldToError) {
-        String login = paramToValue.get("login")[0];
-        String password = paramToValue.get("password")[0];
-        String confirm_password = paramToValue.get("confirm_password")[0];
-        String email = paramToValue.get("email")[0];
+        String login = getFirstValueByKey(paramToValue, "login");
+        String password = getFirstValueByKey(paramToValue, "password");
+        String confirm_password = getFirstValueByKey(paramToValue, "confirm_password");
+        String email = getFirstValueByKey(paramToValue, "email");
 
         if (login == null || login.trim().isEmpty()) {
             fieldToError.put("login", "Pole nazwa nie może być puste.");
@@ -56,10 +64,10 @@ public class RequestParsers {
     }
 
     public FilterOptions parseFilterParams(Map<String,String[]> paramToValue, Map<String,String> fieldToError) {
-        BigDecimal minPrice = new BigDecimal(paramToValue.get("minValue")[0]);
-        BigDecimal maxPrice = new BigDecimal(paramToValue.get("maxValue")[0]);
-        String contains = paramToValue.get("contains")[0];
-        String category = paramToValue.get("category")[0];
+        BigDecimal minPrice = new BigDecimal(Optional.ofNullable(getFirstValueByKey(paramToValue, "minValue")).orElse("-1"));
+        BigDecimal maxPrice = new BigDecimal(Optional.ofNullable(getFirstValueByKey(paramToValue, "maxValue")).orElse("-1"));
+        String contains = getFirstValueByKey(paramToValue, "contains");
+        String category = getFirstValueByKey(paramToValue, "category");
 
         if (minPrice.compareTo(new BigDecimal(0)) < 0) {
             fieldToError.put("param", "Wartość \"minValue\" jest nie prawidłowa.");
@@ -81,6 +89,24 @@ public class RequestParsers {
             return null;
         }
 
+
         return new FilterOptions(minPrice, maxPrice, contains.trim(), ProductCategory.valueOf(category));
+    }
+
+    public ProductToCart parseAddProductToCartParams(Map<String,String[]> paramToValue, Map<String,String> fieldToError) {
+        long productId = Long.parseLong(Optional.ofNullable(getFirstValueByKey(paramToValue, "productId")).orElse("-1"));
+        int quantity = Integer.parseInt(Optional.ofNullable(getFirstValueByKey(paramToValue, "quantity")).orElse("-1"));
+
+        if (productId < 0) {
+            fieldToError.put("param", "Wartość \"productId\" musi być dodatnia");
+            return null;
+        }
+
+        if (quantity < 0) {
+            fieldToError.put("param", "Wartość \"quantity\" musi być dodatnia");
+            return null;
+        }
+
+        return new ProductToCart(productId, quantity);
     }
 }

@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.ToString;
+import pl.wipb.beershop.models.utils.BaseModel;
 import pl.wipb.beershop.models.utils.CartProductId;
 
 @Data
 @Entity
 @Table(name = "CART_PRODUCT")
-public class CartProduct {
+public class CartProduct extends BaseModel<CartProductId> {
     @EmbeddedId
     private CartProductId id;
 

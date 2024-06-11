@@ -3,16 +3,14 @@ package pl.wipb.beershop.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
+import pl.wipb.beershop.models.utils.BaseModel;
 import pl.wipb.beershop.models.utils.ProductCategory;
 
 import java.math.BigDecimal;
 
 @Data
 @Entity
-@NamedQueries({
-  @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
-})
-public class Product {
+public class Product extends BaseModel<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productSeq")
     @SequenceGenerator(name = "productSeq", sequenceName = "PRODUCT_SEQ", allocationSize = 1)

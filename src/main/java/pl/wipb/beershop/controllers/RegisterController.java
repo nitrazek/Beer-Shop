@@ -7,27 +7,31 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pl.wipb.beershop.models.Account;
 import pl.wipb.beershop.services.AuthenticationService;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 @WebServlet("/register")
 public class RegisterController extends HttpServlet {
-    private final Logger log = Logger.getLogger(LoginController.class.getName());
+    private static final Logger log = LogManager.getLogger();
 
     @EJB
     private AuthenticationService authService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        if(authService.verifyAccount(session))
+        HttpSession session = request.getSession(false);
+        String login = (session != null) ? (String) session.getAttribute("login") : null;
+
+        if(authService.verifyAccount(login)) {
+            if (login != null) session.removeAttribute("login");
             response.sendRedirect(request.getContextPath() + "/shop/products");
-        else
+        } else
             request.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(request, response);
     }
 

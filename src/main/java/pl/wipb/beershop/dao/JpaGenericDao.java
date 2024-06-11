@@ -7,13 +7,14 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import pl.wipb.beershop.dao.interfaces.GenericDao;
+import pl.wipb.beershop.models.utils.BaseModel;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Optional;
 
-public class JpaGenericDao<T, K> implements GenericDao<T, K> {
+public class JpaGenericDao<T extends BaseModel<ID>, ID> implements GenericDao<T, ID> {
     @PersistenceContext(name = "PU")
     protected EntityManager em;
 
@@ -26,8 +27,10 @@ public class JpaGenericDao<T, K> implements GenericDao<T, K> {
     }
 
     @Override
-    public void save(T t) {
-        em.persist(t);
+    public T saveOrUpdate(T t) {
+        if(t.getId() == null) em.persist(t);
+        else t = em.merge(t);
+        return t;
     }
 
     @Override
@@ -37,12 +40,7 @@ public class JpaGenericDao<T, K> implements GenericDao<T, K> {
     }
 
     @Override
-    public void update(T t) {
-        em.merge(t);
-    }
-
-    @Override
-    public Optional<T> findById(K id) {
+    public Optional<T> findById(ID id) {
         T dto = em.find(type, id);
         return Optional.ofNullable(dto);
     }

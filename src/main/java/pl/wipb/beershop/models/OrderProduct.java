@@ -2,12 +2,13 @@ package pl.wipb.beershop.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import pl.wipb.beershop.models.utils.BaseModel;
 import pl.wipb.beershop.models.utils.OrderProductId;
 
 @Data
 @Entity
 @Table(name = "ORDER_PRODUCT")
-public class OrderProduct {
+public class OrderProduct extends BaseModel<OrderProductId> {
     @EmbeddedId
     private OrderProductId id;
 
