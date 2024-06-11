@@ -2,6 +2,7 @@ package pl.wipb.beershop.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import pl.wipb.beershop.models.utils.AccountRole;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import java.util.List;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @ToString.Exclude
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -33,9 +35,11 @@ public class Account {
     private AccountRole role = AccountRole.CLIENT;
 
     @OneToMany(mappedBy = "account")
+    @ToString.Exclude
     private List<CartProduct> cartProducts = new ArrayList<>();
 
     @OneToMany(mappedBy = "account")
+    @ToString.Exclude
     private List<Order> orders = new ArrayList<>();
 
     public Account() {}

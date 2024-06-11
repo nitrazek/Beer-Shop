@@ -3,6 +3,7 @@ package pl.wipb.beershop.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
+import lombok.ToString;
 import pl.wipb.beershop.models.utils.CartProductId;
 
 @Data

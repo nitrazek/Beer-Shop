@@ -30,15 +30,27 @@ public class InitialDataLoader {
         em.createNamedQuery("Product.deleteAll", Product.class).executeUpdate();
 
         Account account1 = new Account("admin", "admin", "email1", AccountRole.ADMIN);
+        log.debug("Created account1: {}", account1.toString());
+
         Account account2 = new Account("user2", "password2", "email2", AccountRole.DEALER);
+        log.debug("Created account2: {}", account2.toString());
+
         Account account3 = new Account("user1", "password1", "email3", AccountRole.CLIENT);
+        log.debug("Created account3: {}", account3.toString());
+
         em.persist(account1);
         em.persist(account2);
         em.persist(account3);
 
-        Product product1 = new Product("piwko1", ProductCategory.BEER, 101.51);
-        Product product2 = new Product("piwko2", ProductCategory.BEER, 182.52);
-        Product product3 = new Product("piwko3", ProductCategory.BEER, 234.53);
+        Product product1 = new Product("piwko1", ProductCategory.BEER, new BigDecimal("101.23"));
+        log.debug("Created product1: {}", product1.toString());
+
+        Product product2 = new Product("piwko2", ProductCategory.BEER, new BigDecimal("102.123"));
+        log.debug("Created product2: {}", product2.toString());
+
+        Product product3 = new Product("piwko3", ProductCategory.BEER, new BigDecimal("234.53"));
+        log.debug("Created product3: {}", product3.toString());
+
         em.persist(product1);
         em.persist(product2);
         em.persist(product3);

@@ -2,6 +2,7 @@ package pl.wipb.beershop.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import pl.wipb.beershop.models.utils.ProductCategory;
 
 import java.math.BigDecimal;
@@ -25,11 +26,11 @@ public class Product {
     private ProductCategory category;
 
     @Column(nullable = false, precision = 7, scale = 2)
-    private Double price;
+    private BigDecimal price;
 
     public Product() {};
 
-    public Product(String name, ProductCategory category, Double price) {
+    public Product(String name, ProductCategory category, BigDecimal price) {
         this.name = name;
         this.category = category;
         this.price = price;
