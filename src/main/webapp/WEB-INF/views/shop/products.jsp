@@ -18,7 +18,7 @@
             <div class="title">Lista produktów</div>
         </div>
         <div class="right">
-            <a href=""> <i class='bx bx-cart'><span>${cartProductSize}</span></i></a>
+            <p><a href=""> <i class='bx bx-cart'><span>${cartProductSize}</span></i></a></p>
         </div>
     </div>
 
@@ -29,9 +29,10 @@
                 <p class="price">Cena: ${product.price} zł</p>
                 <div class="quantity">
                         <input type="hidden" name="productId" value="${product.id}">
-                        <input type="number" name="quantity" value="1" min="1" max="10">
+                        <p class="price">Ilość: </p>
+                        <input type="number" name="quantity" value="1" min="1" max="10" readonly>
                 </div>
-                <button>Dodaj do koszyka</button>
+                <button formmethod="post">Dodaj do koszyka</button>
             </div>
         </c:forEach>
     </div>

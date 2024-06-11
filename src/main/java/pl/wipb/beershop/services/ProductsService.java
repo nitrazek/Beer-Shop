@@ -32,9 +32,7 @@ public class ProductsService {
     private RequestParsers parsers;
 
     public List<Product> getProductList() {
-        List<Product> productList = productDao.findAll();
-        log.debug("productList: {}", productList.toString());
-        return productList;
+        return productDao.findAll();
     }
 
     public ProductCategory[] getCategoryList() {
@@ -42,15 +40,13 @@ public class ProductsService {
     }
 
     public int getCartProductSize(HttpSession session) {
-        return 2137;
-        /* Czeka na bazę
         String login = (session != null) ? (String) session.getAttribute("login") : null;
         if (login == null) {
             return -1;
         }
 
         Optional<Account> optAccountFromDb = accountDao.findByLogin(login);
-        return optAccountFromDb.map(account -> account.getCartProducts().size()).orElse(-1);*/
+        return optAccountFromDb.map(account -> account.getCartProducts().size()).orElse(-1);
     }
 
     public List<Product> getFilteredProductList(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {
