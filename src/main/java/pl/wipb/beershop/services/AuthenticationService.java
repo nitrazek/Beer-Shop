@@ -25,7 +25,6 @@ public class AuthenticationService {
 
     public Account handleLogin(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {
         Account account = parsers.parseLoginParams(parameterMap, fieldToError);
-
         if (!fieldToError.isEmpty())
             return account;
 
@@ -46,7 +45,6 @@ public class AuthenticationService {
 
     public Account handleRegister(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {
         Account account = parsers.parseRegisterParams(parameterMap, fieldToError);
-
         if (!fieldToError.isEmpty())
             return account;
 

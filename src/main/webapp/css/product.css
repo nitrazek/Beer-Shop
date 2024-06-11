@@ -1,22 +1,102 @@
-* {
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+body{
     margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-family: Poppins;
+    background: url("../resources/tlo2.jpg") no-repeat center;
+    background-size: cover;
 }
 
-.containter{
-    width: 900px;
-    max-width: 90vw;
+.container{
+
     margin: auto;
+    max-width: 90vw;
     text-align: center;
     padding-top: 10px;
+
 }
+
 header{
+    background-color: rgb(29, 29, 29);
+    color: white;
+    padding: 20px;
+}
+
+.header2 {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 20px 0;
+    font-size: x-large;
+    font-weight: 600;
 }
 
-.listProduct .item 
+.left {
+    flex: 1;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.right {
+    margin-left: auto;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.listProduct {
+    max-width: 90vw;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    align-items: center;
+}
+
+.listProduct .product {
+    background-color: rgb(255, 255, 255, 0.45);
+    padding: 20px;
+    border-radius: 20px;
+
+}
+
+.listProduct .product h2 {
+    font-weight: 600;
+    font-size: large;
+    color: rgb(29,29,29);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.listProduct .product .price {
+    letter-spacing: 2px;
+    font-size: small;
+    color: rgb(29,29,29);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+.listProduct .quantity {
+    align-items: center;
+}
+
+
+.listProduct .quantity input {
+    width: 50px;
+    height: 30px;
+    background-color: rgb(255,255,255,0.75);
+    color: rgb(29,29,29);
+    border-radius: 15%;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.listProduct button {
+    padding: 10px;
+    width: 100%;
+    height: 45px;
+    background: rgb(255,255,255,0.75);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0,0,0,.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
