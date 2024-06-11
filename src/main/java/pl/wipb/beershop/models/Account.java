@@ -13,12 +13,11 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "Account.findByLogin", query = "SELECT a FROM Account a WHERE a.login = :login"),
         @NamedQuery(name = "Account.findByEmail", query = "SELECT a FROM Account a WHERE a.email = :email"),
-        @NamedQuery(name = "Account.deleteAll", query = "DELETE FROM Account")
 })
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @ToString.Exclude
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "accountSeq")
+    @SequenceGenerator(name = "accountSeq", sequenceName = "ACCOUNT_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false, unique = true)

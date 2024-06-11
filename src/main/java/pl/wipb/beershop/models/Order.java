@@ -15,7 +15,8 @@ import java.util.List;
 @Table(name = "\"ORDER\"")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderSeq")
+    @SequenceGenerator(name = "orderSeq", sequenceName = "ORDER_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

@@ -8,6 +8,7 @@ import pl.wipb.beershop.models.utils.CartProductId;
 
 @Data
 @Entity
+@Table(name = "CART_PRODUCT")
 public class CartProduct {
     @EmbeddedId
     private CartProductId id;

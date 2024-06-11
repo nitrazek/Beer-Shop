@@ -11,11 +11,11 @@ import java.math.BigDecimal;
 @Entity
 @NamedQueries({
   @NamedQuery(name = "Product.findAll", query = "SELECT p FROM Product p"),
-  @NamedQuery(name = "Product.deleteAll", query = "DELETE FROM Product")
 })
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productSeq")
+    @SequenceGenerator(name = "productSeq", sequenceName = "PRODUCT_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)
@@ -25,7 +25,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
 
-    @Column(nullable = false, precision = 7, scale = 2)
+    @Column(nullable = false)
     private BigDecimal price;
 
     public Product() {};
