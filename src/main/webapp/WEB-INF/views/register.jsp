@@ -36,7 +36,7 @@
         <button type="submit" class="btn">Zarejestruj się</button>
 
         <div class="register-link">
-            <p>Masz już konto? <a href="/beershop/login">Zaloguj się</a></p>
+            <p>Masz już konto? <a href="${pageContext.request.contextPath}/login">Zaloguj się</a></p>
         </div>
         <c:if test = "${not empty errors.login}">
             <td><span class="error">${errors.login}</span></td>
