@@ -63,9 +63,9 @@ header {
     padding: 10px;
 }
 
-.wrapper .input-field {
+.wrapper .input-group .input-field {
     margin: 0 10px;
-    padding: 5px 70px;
+    padding: 5px 70px 5px 70px;
 }
 
 .wrapper .text-input {
@@ -76,6 +76,9 @@ header {
     color: rgb(29, 29, 29);
     margin-bottom: 10px;
     text-align: center;
+}
+.wrapper .checkbox-input {
+    font-size: large;
 }
 
 .wrapper .column-title {
@@ -99,3 +102,5 @@ input[type="radio"] {
     transform: scale(1.2);
     margin: 10px;
 }
+
+        
