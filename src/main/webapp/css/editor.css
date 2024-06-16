@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+body {
+    margin: 0;
+    font-family: Poppins;
+    background: url("../resources/tlo2.jpg") no-repeat center;
+    background-size: cover;
+}
+
+.container {
+    margin: auto;
+    max-width: 35vw;
+    text-align: center;
+    padding-top: 10px;
+}
+
+header {
+    background-color: rgb(29, 29, 29);
+    color: white;
+    padding: 20px;
+}
+
+.header2 {
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    font-size: x-large;
+    font-weight: 600;
+}
+
+.wrapper {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 5%;
+}
+
+.wrapper .header, .wrapper .footer {
+    font-size: x-large;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.wrapper .footer button {
+    width: 25vw;
+    max-width: 200px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.75);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.wrapper .input-group {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.wrapper .input-field {
+    margin: 0 10px;
+    padding: 5px 70px;
+}
+
+.wrapper .text-input {
+    width: 20vw;
+    max-width: 250px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.75);
+    color: rgb(29, 29, 29);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.wrapper .column-title {
+    font-weight: 700;
+    margin-bottom: 5px;
+    font-size: large;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.radio-group label {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+input[type="radio"] {
+    transform: scale(1.2);
+    margin: 10px;
+}
