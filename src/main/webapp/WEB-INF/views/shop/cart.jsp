@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
     <title>Koszyk</title>
@@ -68,42 +70,20 @@
     </div>
 
     <div class="cart">
-        <div class="cart-item">
-            <div class="item-info">
-                <div class="item-name">Piwo Jasne</div>
-                <div class="item-price" data-price="5.00">Cena: 5.00 PLN</div>
+        <c:forEach items="${cartProductList}" var="cartProduct">
+            <div class="cart-item">
+                <div class="item-info">
+                    <div class="item-name">${cartProduct.product.name}</div>
+                    <div class="item-price" data-price="${cartProduct.product.price}">Cena: ${cartProduct.product.price} PLN</div>
+                </div>
+                <div class="item-remove">USUŃ Z KOSZYKA</div>
+                <div class="item-quantity">
+                    <span>Ilość:</span>
+                    <input type="number" value=${cartProduct.amount} min="1">
+                </div>
+                <div class="item-total-price">0.00 PLN</div>
             </div>
-            <div class="item-remove">USUŃ Z KOSZYKA</div>
-            <div class="item-quantity">
-                <span>Ilość:</span>
-                <input type="number" value="2" min="1">
-            </div>
-            <div class="item-total-price">10.00 PLN</div>
-        </div>
-        <div class="cart-item">
-            <div class="item-info">
-                <div class="item-name">Piwo Ciemne</div>
-                <div class="item-price" data-price="6.00">Cena: 6.00 PLN</div>
-            </div>
-            <div class="item-remove">USUŃ Z KOSZYKA</div>
-            <div class="item-quantity">
-                <span>Ilość:</span>
-                <input type="number" value="1" min="1">
-            </div>
-            <div class="item-total-price">6.00 PLN</div>
-        </div>
-        <div class="cart-item">
-            <div class="item-info">
-                <div class="item-name">Piwo Bezalkoholowe</div>
-                <div class="item-price" data-price="4.50">Cena: 4.50 PLN</div>
-            </div>
-            <div class="item-remove">USUŃ Z KOSZYKA</div>
-            <div class="item-quantity">
-                <span>Ilość:</span>
-                <input type="number" value="3" min="1">
-            </div>
-            <div class="item-total-price">13.50 PLN</div>
-        </div>
+        </c:forEach>
         <div class="cart-item total">
             <div class="item-info">
                 <div class="item-name total-price">RAZEM</div>
@@ -113,7 +93,7 @@
             </div>
         </div>
     </div>
-    <button>Kontynuuj zakupy</button>
+    <a href="/beershop/shop/products"><button>Kontynuuj zakupy</button></a>
     <button>Złóż zamówienie</button>
 
 </div>

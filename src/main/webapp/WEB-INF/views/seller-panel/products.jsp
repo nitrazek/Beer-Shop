@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
     <title>Lista produktów</title>
@@ -32,7 +33,7 @@
                 <input class="text-input" type="text">
             </div>
             <div class="input-field">
-                <div class="column-title">Rola</div>
+                <div class="column-title">Kategoria</div>
                 <div class="checkbox-group">
                     <label><input type="checkbox" name="role" value="piwo"> Piwo</label>
                 </div>

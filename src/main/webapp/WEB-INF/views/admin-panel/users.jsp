@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
     <title>Lista użytkowników</title>
@@ -58,33 +60,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>admin</td>
-                <td>admin@ebrowarek.pl</td>
-                <td>Administrator</td>
-                <td>
-                    <button class="button edit-button">Edytuj</button>
-                    <button class="button delete-button">Usuń</button>
-                </td>
-            </tr>
-            <tr>
-                <td>handlarz1</td>
-                <td>handlarz1@ebrowarek.pl</td>
-                <td>Sprzedawca</td>
-                <td>
-                    <button class="button edit-button">Edytuj</button>
-                    <button class="button delete-button">Usuń</button>
-                </td>
-            </tr>
-            <tr>
-                <td>klient</td>
-                <td>sałajajaj@sw.xd</td>
-                <td>Klient</td>
-                <td>
-                    <button class="button edit-button">Edytuj</button>
-                    <button class="button delete-button">Usuń</button>
-                </td>
-            </tr>
+                <c:forEach items="${accountList}" var="account">
+                    <tr>
+                    <td>${account.login}</td>
+                    <td>${account.email}</td>
+                    <td>${account.role}</td>
+                    <td>
+                        <a href="/beershop/admin/editor?userId=${account.id}"><button class="button edit-button">Edytuj</button></a>
+                        <button class="button delete-button">Usuń</button>
+                    </td>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
     </div>

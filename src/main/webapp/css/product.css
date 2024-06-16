@@ -25,10 +25,32 @@ header {
     padding: 20px 0;
     font-size: x-large;
     font-weight: 600;
+    position: relative;
+}
+
+.header2 .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0; /* Ensure no additional margins are applied */
+}
+
+.header2 .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto; /* Push it to the far right */
 }
 
 
-.right p a:hover {
+a {
+    color: #000;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+a:hover {
+    color: #FFF;
     text-decoration: underline;
 }
 
@@ -177,6 +199,16 @@ button {
 
 .column {
     display: grid;
-    grid-template-columns: auto; /* lub możesz użyć wartości auto, minmax itp., aby dostosować szerokość kolumn */
-    gap: 10px; /* opcjonalne - odstęp między elementami */
+    grid-template-columns: auto;
+    gap: 10px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 10px;
 }

@@ -18,6 +18,7 @@ import pl.wipb.beershop.utils.ProductToCart;
 import pl.wipb.beershop.utils.RequestParsers;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -49,6 +50,11 @@ public class ProductsService {
         return optAccountFromDb.map(account -> account.getCartProducts().stream()
                 .mapToInt(CartProduct::getAmount)
                 .sum()).orElse(-1);
+    }
+
+    public List<CartProduct> getCartProductList(String login) {
+        Optional<Account> optAccountFromDb = accountDao.findByLogin(login);
+        return optAccountFromDb.map(Account::getCartProducts).orElse(null);
     }
 
     public List<Product> getFilteredProductList(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {

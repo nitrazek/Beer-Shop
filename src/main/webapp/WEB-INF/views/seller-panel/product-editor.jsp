@@ -9,6 +9,8 @@
 <html>
 <head>
     <title>Dodaj/edytuj produkt</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/editor.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
 </head>
 <body>
 <header>

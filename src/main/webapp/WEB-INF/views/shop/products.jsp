@@ -13,11 +13,9 @@
 </header>
 <div class="container">
     <div class="header2">
-        <div class="left">
             <div class="title">Lista produktów</div>
-        </div>
         <div class="right">
-            <p><a href=""> <i class='bx bx-cart'><span>${cartProductSize}</span></i></a></p>
+            <p><a href="/beershop/shop/cart"> <i class='bx bx-cart'><span>${cartProductSize}</span></i></a></p>
         </div>
     </div>
 
@@ -37,13 +35,13 @@
                             <input width="400px" name="contains"/>
                         </div>
                         <div>
-                            <p class="price">Minimalna cena (zł):</p>
+                            <p class="price">Minimalna cena (PLN):</p>
                         </div>
                         <div>
                             <input width="150px" type="number" name="minValue" min="0" max="100">
                         </div>
                         <div>
-                            <p class="price">Maksymalna cena (zł):</p>
+                            <p class="price">Maksymalna cena (PLN):</p>
                         </div>
                         <div>
                             <input width="150px" type="number" name="maxValue" min="0" max="100">
@@ -53,8 +51,10 @@
                         <div>
                             <p class="price">Kategorie:</p>
                             <c:forEach items="${categoryList}" var="productCategory">
-                                <input type="checkbox" name="category" value="${productCategory}">
-                                <label>${productCategory}</label><br>
+                                <div class="checkbox-container">
+                                    <input type="checkbox" name="category" value="${productCategory}">
+                                    <label>${productCategory}</label>
+                                </div>
                             </c:forEach>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
         <c:forEach items="${productList}" var="product">
             <div class="product">
                 <h2>${product.name}</h2>
-                <p class="price">Cena: ${product.price} zł</p>
+                <p class="price">Cena: ${product.price} PLN</p>
                 <div class="quantity">
                     <form method="post">
                         <input type="hidden" name="action" value="addToCart">
