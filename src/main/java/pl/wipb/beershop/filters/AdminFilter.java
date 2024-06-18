@@ -15,7 +15,7 @@ import pl.wipb.beershop.services.AuthenticationService;
 
 import java.io.IOException;
 
-@WebFilter("/shop/*")
+@WebFilter("/admin/*")
 public class AdminFilter extends HttpFilter {
     private static final Logger log = LogManager.getLogger();
     @EJB

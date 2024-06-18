@@ -14,6 +14,6 @@ Funkcjonalności:
 - (sprzedawca) dodanie nowego produktu
 - (sprzedawca) edycja istniejącego produktu
 - (sprzedawca) usunięcie produktu
-- (admin) dodanie nowego konta sprzedawcy
-- (admin) edycja istniejącego konta sprzedawcy
-- (admin) usunięcie konta sprzedawcy
+- (admin) dodanie nowego konta
+- (admin) edycja istniejącego konta
+- (admin) usunięcie konta

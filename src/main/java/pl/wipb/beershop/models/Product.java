@@ -26,7 +26,7 @@ public class Product extends BaseModel<Long> {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    public Product() {};
+    public Product() {}
 
     public Product(String name, ProductCategory category, BigDecimal price) {
         this.name = name;

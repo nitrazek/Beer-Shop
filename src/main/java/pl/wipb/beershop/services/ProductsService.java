@@ -4,21 +4,17 @@ import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import jakarta.servlet.http.HttpSession;
 import pl.wipb.beershop.dao.interfaces.AccountDao;
 import pl.wipb.beershop.dao.interfaces.CartProductDao;
 import pl.wipb.beershop.dao.interfaces.ProductDao;
 import pl.wipb.beershop.models.Account;
 import pl.wipb.beershop.models.CartProduct;
 import pl.wipb.beershop.models.Product;
-import pl.wipb.beershop.models.utils.CartProductId;
 import pl.wipb.beershop.models.utils.ProductCategory;
-import pl.wipb.beershop.utils.FilterOptions;
+import pl.wipb.beershop.utils.ProductFilterOptions;
 import pl.wipb.beershop.utils.ProductToCart;
 import pl.wipb.beershop.utils.RequestParsers;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,19 +54,17 @@ public class ProductsService {
     }
 
     public List<Product> getFilteredProductList(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {
-        FilterOptions filterOptions = parsers.parseFilterParams(parameterMap, fieldToError);
+        ProductFilterOptions filterOptions = parsers.parseProductFilterParams(parameterMap, fieldToError);
         if (!fieldToError.isEmpty())
             return null;
 
         List<Product> originalProductList = getProductList();
 
-        log.debug(filterOptions.toString());
-
-        return originalProductList.stream()
-                .filter(p -> p.getPrice().compareTo(filterOptions.getMinPrice()) > 0 &&
-                        p.getPrice().compareTo(filterOptions.getMaxPrice()) < 0 &&
-                        p.getName().contains(filterOptions.getContains()) &&
-                        p.getCategory().equals(filterOptions.getCategory()))
+        return originalProductList.stream().filter(p ->
+                p.getPrice().compareTo(filterOptions.getMinPrice()) > 0 &&
+                p.getPrice().compareTo(filterOptions.getMaxPrice()) < 0 &&
+                p.getName().contains(filterOptions.getContains()) &&
+                p.getCategory().equals(filterOptions.getCategory()))
                 .collect(Collectors.toList());
     }
 
@@ -90,15 +84,29 @@ public class ProductsService {
         Product product = optProduct.get();
 
         List<CartProduct> cartProducts = account.getCartProducts();
-        CartProduct optCartProduct = cartProducts.stream()
+        Optional<CartProduct> optCartProduct = cartProducts.stream()
                 .filter(c -> c.getProduct().getId().equals(product.getId()) &&
                         c.getAccount().getId().equals(account.getId()))
-                .findFirst()
-                .orElse(new CartProduct(account, product, 0));
-        optCartProduct.setAmount(optCartProduct.getAmount() + productToCart.getQuantity());
-        account.getCartProducts().add(optCartProduct);
+                .findFirst();
 
-        cartProductDao.saveOrUpdate(optCartProduct);
+        if(optCartProduct.isEmpty()) account.getCartProducts().add(new CartProduct(account, product));
+        else {
+            account.getCartProducts().forEach(cartProduct -> {
+                if(cartProduct.getProduct().equals(product) && cartProduct.getAccount().equals(account)) {
+                    cartProduct.increaseAmount(productToCart.getQuantity());
+                    cartProductDao.saveOrUpdate(cartProduct);
+                }
+            });
+        }
+
         accountDao.saveOrUpdate(account);
+    }
+
+    public void createOrUpdateProduct() {
+
+    }
+
+    public void deleteProduct() {
+
     }
 }

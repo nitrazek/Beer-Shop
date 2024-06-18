@@ -33,7 +33,7 @@ public class SellerFilter extends HttpFilter {
         HttpSession session = request.getSession(false);
         String login = (session != null) ? (String) session.getAttribute("login") : null;
 
-        if(authService.verifySeller(login))
+        if(authService.verifySeller(login) || authService.verifyAdmin(login))
             chain.doFilter(request, response);
         else {
             if (login != null) session.removeAttribute("login");

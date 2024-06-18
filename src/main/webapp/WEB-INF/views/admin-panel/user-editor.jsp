@@ -27,25 +27,36 @@
         <div class="input-group">
             <div class="input-field">
                 <div class="column-title">Nazwa użytkownika</div>
-                <input class="text-input" type="text">
+                <input class="text-input" value="${account.login}" type="text"/>
                 <div class="column-title">Email</div>
-                <input class="text-input" type="text">
+                <input class="text-input" value="${account.email}" type="text"/>
                 <div class="column-title">Hasło</div>
-                <input class="text-input" type="password">
+                <input class="text-input" type="password"/>
                 <div class="column-title">Powtórz hasło</div>
-                <input class="text-input" type="password">
+                <input class="text-input" type="password"/>
                 <div class="column-title">Rola</div>
                 <div class="radio-group">
-                    <label><input type="radio" name="role" value="Sprzedawca"> Sprzedawca</label><br/>
-                    <label><input type="radio" name="role" value="Klient"> Klient</label>
+                    <label><input type="radio" name="role" value="Sprzedawca" id="sprzedawca-radio"> Sprzedawca</label><br/>
+                    <label><input type="radio" name="role" value="Klient" id="klient-radio"> Klient</label>
                 </div>
                 <div class="footer"><button>Zapisz</button></div>
-                <div class="footer"><button>Anuluj</button></div>
+                <div class="footer"><a href="/beershop/admin/users"><button>Anuluj</button></a></div>
             </div>
         </div>
     </div>
 
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var role = '${account.role}';
 
+        if (role === 'DEALER') {
+            document.getElementById('sprzedawca-radio').checked = true;
+        } else if (role === 'CLIENT') {
+            document.getElementById('klient-radio').checked = true;
+        }
+    });
+
+</script>
 </body>
 </html>

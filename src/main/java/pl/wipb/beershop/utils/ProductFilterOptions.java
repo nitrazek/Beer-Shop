@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
-public class FilterOptions {
+public class ProductFilterOptions {
     private BigDecimal minPrice;
     private BigDecimal maxPrice;
     private String contains;
