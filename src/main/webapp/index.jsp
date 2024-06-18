@@ -4,7 +4,7 @@
 <html>
     <head>
         <script type="text/javascript">
-            window.location.href = "${pageContext.request.contextPath}/login";
+            window.location.href = "${pageContext.request.contextPath}/shop/products";
         </script>
         <title>JPA Page</title>
     </head>
