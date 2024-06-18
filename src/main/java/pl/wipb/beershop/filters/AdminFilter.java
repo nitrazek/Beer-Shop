@@ -16,10 +16,8 @@ import pl.wipb.beershop.services.AuthenticationService;
 import java.io.IOException;
 
 @WebFilter("/shop/*")
-public class PermissionFilter extends HttpFilter {
+public class AdminFilter extends HttpFilter {
     private static final Logger log = LogManager.getLogger();
-    @EJB
-    private AccountDao accountDao;
     @EJB
     private AuthenticationService authService;
 
@@ -35,7 +33,7 @@ public class PermissionFilter extends HttpFilter {
         HttpSession session = request.getSession(false);
         String login = (session != null) ? (String) session.getAttribute("login") : null;
 
-        if(authService.verifyAccount(login))
+        if(authService.verifyAdmin(login))
             chain.doFilter(request, response);
         else {
             if (login != null) session.removeAttribute("login");

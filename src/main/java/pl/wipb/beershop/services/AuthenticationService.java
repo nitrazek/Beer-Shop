@@ -13,6 +13,7 @@ import pl.wipb.beershop.models.utils.AccountRole;
 import pl.wipb.beershop.utils.RequestParsers;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,6 +23,10 @@ public class AuthenticationService {
     private AccountDao accountDao;
     @EJB
     private RequestParsers parsers;
+
+    public List<Account> getAllAccounts() {
+        return accountDao.findAll(); // our application is very safe, for real
+    }
 
     public Account handleLogin(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {
         Account account = parsers.parseLoginParams(parameterMap, fieldToError);
@@ -69,5 +74,24 @@ public class AuthenticationService {
 
         Optional<Account> account = accountDao.findByLogin(login);
         return account.isPresent();
+    }
+
+    public boolean verifySeller(String login) {
+        if (login == null) {
+            return false;
+        }
+
+        Optional<Account> account = accountDao.findByLogin(login);
+        return account.map(value -> value.getRole().equals(AccountRole.DEALER)).orElse(false);
+
+    }
+
+    public boolean verifyAdmin(String login) {
+        if (login == null) {
+            return false;
+        }
+
+        Optional<Account> account = accountDao.findByLogin(login);
+        return account.map(value -> value.getRole().equals(AccountRole.ADMIN)).orElse(false);
     }
 }
