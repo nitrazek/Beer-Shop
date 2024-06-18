@@ -23,7 +23,7 @@ public class Product extends BaseModel<Long> {
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
     public Product() {};
