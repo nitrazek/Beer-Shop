@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
 body {
     margin: 0;
     font-family: Poppins;
@@ -42,6 +44,53 @@ header {
     margin-left: auto; /* Push it to the far right */
 }
 
+.hidden-input {
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    outline: none;
+    width: 2em;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content i.bx-beer {
+    margin-right: 10px;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+}
+
+nav p {
+    margin: 0;
+}
+
+nav p a {
+    color: #FFF;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+nav p a:hover {
+    color: #777;
+    text-decoration: underline;
+}
+
+nav p a i {
+    margin-right: 5px;
+}
 
 a {
     color: #000;
@@ -53,6 +102,7 @@ a:hover {
     color: #FFF;
     text-decoration: underline;
 }
+
 
 .listProduct {
     max-width: 90vw;

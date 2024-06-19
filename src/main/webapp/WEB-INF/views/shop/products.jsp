@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 <head>
@@ -9,13 +11,23 @@
 </head>
 <body>
 <header>
-    <i class='bx bx-beer'></i> eBrowarek
+    <div class="header-content">
+        <span><i class='bx bx-beer'></i> eBrowarek</span>
+        <nav>
+            <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel sprzedawcy</a></p>
+            <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel administratora</a></p>
+            <p><a href=""><i class='bx bx-log-out'></i> Wyloguj się</a></p>
+        </nav>
+    </div>
+
 </header>
 <div class="container">
     <div class="header2">
             <div class="title">Lista produktów</div>
         <div class="right">
-            <p><a href="/beershop/shop/cart"> <i class='bx bx-cart'><span>${cartProductSize}</span></i></a></p>
+            <form method="post">
+            <p><a href="${pageContext.request.contextPath}/shop/cart"> <i class='bx bx-cart'><fmt:formatNumber value="${cartProductSize}" type="number" /></i></a></p>
+            </form>
         </div>
     </div>
 
@@ -38,13 +50,13 @@
                             <p class="price">Minimalna cena (PLN):</p>
                         </div>
                         <div>
-                            <input width="150px" type="number" name="minValue" min="0" max="100">
+                            <input width="150px" type="number" name="minValue" step="0.01" min="0" max="100">
                         </div>
                         <div>
                             <p class="price">Maksymalna cena (PLN):</p>
                         </div>
                         <div>
-                            <input width="150px" type="number" name="maxValue" min="0" max="100">
+                            <input width="150px" type="number" name="maxValue" step="0.01" min="0" max="100">
                         </div>
                     </div>
                     <div style="flex: 1;">
@@ -52,8 +64,8 @@
                             <p class="price">Kategorie:</p>
                             <c:forEach items="${categoryList}" var="productCategory">
                                 <div class="checkbox-container">
-                                    <input type="checkbox" name="category" value="${productCategory}">
-                                    <label>${productCategory}</label>
+                                    <input type="checkbox" name="category" value="${fn:escapeXml(productCategory)}">
+                                    <label>${fn:escapeXml(productCategory)}</label>
                                 </div>
                             </c:forEach>
                         </div>

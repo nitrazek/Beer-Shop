@@ -9,13 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pl.wipb.beershop.models.Account;
 import pl.wipb.beershop.models.Product;
 import pl.wipb.beershop.models.utils.ProductCategory;
-import pl.wipb.beershop.services.AuthenticationService;
 import pl.wipb.beershop.services.ProductsService;
-import pl.wipb.beershop.utils.FilterOptions;
-import pl.wipb.beershop.utils.RequestParsers;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,7 +28,6 @@ public class ProductsController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         String login = (session != null) ? (String) session.getAttribute("login") : null;
-
         int cartProductSize = prodService.getCartProductSize(login);
         if(cartProductSize < 0) {
             response.sendRedirect(request.getContextPath() + "/login");
@@ -49,7 +44,6 @@ public class ProductsController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info(request.getParameterMap().toString());
         if (request.getParameter("filterButton") != null)
             doFilterRequest(request, response);
         else if (request.getParameter("addToCartButton") != null)

@@ -32,7 +32,7 @@ public class Account extends BaseModel<Long> {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private AccountRole role = AccountRole.CLIENT;
+    private AccountRole role;
 
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     @ToString.Exclude

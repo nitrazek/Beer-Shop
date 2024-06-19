@@ -1,10 +1,8 @@
 package pl.wipb.beershop.models;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.Fetch;
 import lombok.Data;
 import pl.wipb.beershop.models.utils.BaseModel;
-import pl.wipb.beershop.models.utils.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,15 +12,14 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "\"ORDER\"")
+@NamedQueries({
+        @NamedQuery(name = "Order.findByAccount", query = "SELECT o FROM Order o WHERE o.account = :accountId")
+})
 public class Order extends BaseModel<Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderSeq")
     @SequenceGenerator(name = "orderSeq", sequenceName = "ORDER_SEQ", allocationSize = 1)
     private Long id;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status = OrderStatus.CART;
 
     @Column(nullable = false)
     private LocalDateTime creationDate;
@@ -45,5 +42,9 @@ public class Order extends BaseModel<Long> {
 
     public Order(Account account) {
         this.account = account;
+    }
+
+    public void increaseTotalPrice(BigDecimal price) {
+        totalPrice = totalPrice.add(price);
     }
 }

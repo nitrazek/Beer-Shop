@@ -63,9 +63,29 @@ public class RequestParsers {
         return fieldToError.isEmpty() ? new Account(login.trim(), password.trim(), email.trim(), AccountRole.CLIENT) : null;
     }
 
-    public FilterOptions parseFilterParams(Map<String,String[]> paramToValue, Map<String,String> fieldToError) {
-        BigDecimal minPrice = new BigDecimal(Optional.ofNullable(getFirstValueByKey(paramToValue, "minValue")).orElse("-1"));
-        BigDecimal maxPrice = new BigDecimal(Optional.ofNullable(getFirstValueByKey(paramToValue, "maxValue")).orElse("-1"));
+    public AccountFilterOptions parseAccountFilterParams(Map<String,String[]> paramToValue, Map<String,String> fieldToError) {
+        String login = getFirstValueByKey(paramToValue, "accountLogin");
+        String email = getFirstValueByKey(paramToValue, "accountEmail");
+        boolean adminRole = getFirstValueByKey(paramToValue, "adminRole") != null;
+        boolean dealerRole = getFirstValueByKey(paramToValue, "adminRole") != null;
+        boolean clientRole = getFirstValueByKey(paramToValue, "adminRole") != null;
+
+        if (login == null) {
+            fieldToError.put("param", "Wartość \"accountLogin\" musi istnieć.");
+            return null;
+        }
+
+        if (email == null) {
+            fieldToError.put("param", "Wartość \"accountEmail\" musi istnieć.");
+            return null;
+        }
+
+        return new AccountFilterOptions(login, email, adminRole, dealerRole, clientRole);
+    }
+
+    public ProductFilterOptions parseProductFilterParams(Map<String,String[]> paramToValue, Map<String,String> fieldToError) {
+        BigDecimal minPrice = new BigDecimal(Optional.ofNullable(getFirstValueByKey(paramToValue, "minValue")).orElse("-1.0"));
+        BigDecimal maxPrice = new BigDecimal(Optional.ofNullable(getFirstValueByKey(paramToValue, "maxValue")).orElse("-1.0"));
         String contains = getFirstValueByKey(paramToValue, "contains");
         String category = getFirstValueByKey(paramToValue, "category");
 
@@ -90,7 +110,7 @@ public class RequestParsers {
         }
 
 
-        return new FilterOptions(minPrice, maxPrice, contains.trim(), ProductCategory.valueOf(category));
+        return new ProductFilterOptions(minPrice, maxPrice, contains.trim(), ProductCategory.valueOf(category));
     }
 
     public ProductToCart parseAddProductToCartParams(Map<String,String[]> paramToValue, Map<String,String> fieldToError) {

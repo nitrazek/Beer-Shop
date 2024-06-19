@@ -14,7 +14,9 @@ import pl.wipb.beershop.services.AuthenticationService;
 import pl.wipb.beershop.services.ProductsService;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/admin/users")
 public class AdminUsersController extends HttpServlet {
@@ -39,6 +41,30 @@ public class AdminUsersController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("filterButton") != null)
+            doFilterRequest(request, response);
+        else if (request.getParameter("addAccountButton") != null)
+            doAddAccountButton(request, response);
+        else if (request.getParameter("editAccountButton") != null)
+            doEditAccountButton(request, response);
+        else if (request.getParameter("deleteAccountButton") != null)
+            doDeleteAccountButton(request, response);
+    }
 
+    private void doFilterRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String,String> fieldToError = new HashMap<>();
+        List<Account> accountList = authService.getFilteredAccountList(request.getParameterMap(), fieldToError);
+    }
+
+    private void doAddAccountButton(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String,String> fieldToError = new HashMap<>();
+    }
+
+    private void doEditAccountButton(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String,String> fieldToError = new HashMap<>();
+    }
+
+    private void doDeleteAccountButton(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String,String> fieldToError = new HashMap<>();
     }
 }

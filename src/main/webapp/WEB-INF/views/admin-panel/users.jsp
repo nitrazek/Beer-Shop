@@ -28,25 +28,35 @@
 
     <div class="filters">
         <div class="header">Filtry</div>
-        <div class="input-group">
-            <div class="input-field">
-                <div class="column-title">Nazwa użytkownika</div>
-                <input class="text-input" type="text">
-            </div>
-            <div class="input-field">
-                <div class="column-title">Email</div>
-                <input class="text-input" type="text">
-            </div>
-            <div class="input-field">
-                <div class="column-title">Rola</div>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" name="role" value="Administrator"> Administrator</label>
-                    <label><input type="checkbox" name="role" value="Sprzedawca"> Sprzedawca</label>
-                    <label><input type="checkbox" name="role" value="Klient"> Klient</label>
+        <form method="post">
+            <div class="input-group">
+                <div class="input-field">
+                    <div class="column-title">Nazwa użytkownika</div>
+                    <input class="text-input" type="text" name="accountLogin">
+                </div>
+                <div class="input-field">
+                    <div class="column-title">Email</div>
+                    <input class="text-input" type="text" name="accountEmail">
+                </div>
+                <div class="input-field">
+                    <div class="column-title">Rola</div>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="adminRole" value="ADMIN"> Administrator</label>
+                        <label><input type="checkbox" name="dealerRole" value="DEALER"> Sprzedawca</label>
+                        <label><input type="checkbox" name="clientRole" value="CLIENT"> Klient</label>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="footer"><button>Szukaj użytkownika</button></div>
+            <c:if test="${not empty errors.param}">
+            <td><span class="error">${errors.param}</span></td>
+            </c:if>
+            <div class="footer">
+                <button name="filterButton">Szukaj użytkownika</button>
+            </div>
+            <div class="footer"><a href="${pageContext.request.contextPath}/admin/editor">
+                <button name="addAccountButton">Dodaj nowego użytkownika</button>
+            </a></div>
+        </form>
     </div>
 
     <div class="user-list">
@@ -60,17 +70,21 @@
             </tr>
             </thead>
             <tbody>
-                <c:forEach items="${accountList}" var="account">
-                    <tr>
+            <c:forEach items="${accountList}" var="account">
+                <tr>
                     <td>${account.login}</td>
                     <td>${account.email}</td>
                     <td>${account.role}</td>
                     <td>
-                        <a href="/beershop/admin/editor?userId=${account.id}"><button class="button edit-button">Edytuj</button></a>
-                        <button class="button delete-button">Usuń</button>
+                        <c:if test="${account.role != 'ADMIN'}">
+                            <a href="${pageContext.request.contextPath}/admin/editor?userId=${account.id}">
+                                <button class="button edit-button" name="editAccountButton">Edytuj</button>
+                            </a>
+                            <button class="button delete-button" name="deleteAccountButton">Usuń</button>
+                        </c:if>
                     </td>
-                    </tr>
-                </c:forEach>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
     </div>

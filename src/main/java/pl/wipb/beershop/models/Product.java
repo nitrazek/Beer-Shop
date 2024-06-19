@@ -2,7 +2,6 @@ package pl.wipb.beershop.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 import pl.wipb.beershop.models.utils.BaseModel;
 import pl.wipb.beershop.models.utils.ProductCategory;
 
@@ -26,7 +25,7 @@ public class Product extends BaseModel<Long> {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    public Product() {};
+    public Product() {}
 
     public Product(String name, ProductCategory category, BigDecimal price) {
         this.name = name;

@@ -93,7 +93,7 @@
             </div>
         </div>
     </div>
-    <a href="/beershop/shop/products"><button>Kontynuuj zakupy</button></a>
+    <a href="${pageContext.request.contextPath}/shop/products"><button>Kontynuuj zakupy</button></a>
     <button>Złóż zamówienie</button>
 
 </div>
