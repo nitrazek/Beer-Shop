@@ -40,7 +40,7 @@
                     <label><input type="radio" name="role" value="Klient" id="klient-radio"> Klient</label>
                 </div>
                 <div class="footer"><button>Zapisz</button></div>
-                <div class="footer"><a href="/beershop/admin/users"><button>Anuluj</button></a></div>
+                <div class="footer"><a href="${pageContext.request.contextPath}/admin/users"><button>Anuluj</button></a></div>
             </div>
         </div>
     </div>

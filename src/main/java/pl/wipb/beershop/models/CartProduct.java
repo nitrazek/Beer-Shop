@@ -38,4 +38,8 @@ public class CartProduct extends BaseModel<CartProductId> {
     public void increaseAmount(Integer amount) {
         this.amount += amount;
     }
+    
+    public void decreaseAmount(Integer amount) {
+        this.amount -= amount;
+    }
 }

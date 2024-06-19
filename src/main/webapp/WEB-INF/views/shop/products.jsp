@@ -14,8 +14,8 @@
     <div class="header-content">
         <span><i class='bx bx-beer'></i> eBrowarek</span>
         <nav>
-            <p><a href="/beershop/seller/products"><i class='bx bx-store'></i> Panel sprzedawcy</a></p>
-            <p><a href="/beershop/admin/users"><i class='bx bx-crown'></i> Panel administratora</a></p>
+            <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel sprzedawcy</a></p>
+            <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel administratora</a></p>
             <p><a href=""><i class='bx bx-log-out'></i> Wyloguj się</a></p>
         </nav>
     </div>
@@ -26,7 +26,7 @@
             <div class="title">Lista produktów</div>
         <div class="right">
             <form method="post">
-            <p><a href="/beershop/shop/cart"> <i class='bx bx-cart'><fmt:formatNumber value="${cartProductSize}" type="number" /></i></a></p>
+            <p><a href="${pageContext.request.contextPath}/shop/cart"> <i class='bx bx-cart'><fmt:formatNumber value="${cartProductSize}" type="number" /></i></a></p>
             </form>
         </div>
     </div>

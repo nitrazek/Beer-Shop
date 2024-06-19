@@ -103,6 +103,26 @@ public class ProductsService {
         accountDao.saveOrUpdate(account);
     }
 
+    public void removeProductFromCart(String login, Product product, Integer amount) {
+        Optional<Account> optAccount = accountDao.findByLogin(login);
+        if(optAccount.isEmpty()) return;
+        
+        Account account = optAccount.get();
+        List<CartProduct> cartProducts = account.getCartProducts(); 
+        cartProducts.forEach(cartProduct -> {
+            if(!cartProduct.getAccount().equals(account) || !cartProduct.getProduct().equals(product)) return;
+            Integer productAmount = cartProduct.getAmount();
+            if(amount >= productAmount) {
+                cartProducts.remove(cartProduct);
+                cartProductDao.delete(cartProduct);
+                return;
+            }
+            cartProduct.decreaseAmount(amount);
+        });
+        
+        accountDao.saveOrUpdate(account);
+    }
+    
     public void createOrUpdateProduct(String name, ProductCategory category, BigDecimal price) {
         Product product = new Product(name, category, price);
         productDao.saveOrUpdate(product);

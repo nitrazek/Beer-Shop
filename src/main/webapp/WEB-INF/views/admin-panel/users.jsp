@@ -53,7 +53,7 @@
             <div class="footer">
                 <button name="filterButton">Szukaj użytkownika</button>
             </div>
-            <div class="footer"><a href="/beershop/admin/editor">
+            <div class="footer"><a href="${pageContext.request.contextPath}/admin/editor">
                 <button name="addAccountButton">Dodaj nowego użytkownika</button>
             </a></div>
         </form>
@@ -77,7 +77,7 @@
                     <td>${account.role}</td>
                     <td>
                         <c:if test="${account.role != 'ADMIN'}">
-                            <a href="/beershop/admin/editor?userId=${account.id}">
+                            <a href="${pageContext.request.contextPath}/admin/editor?userId=${account.id}">
                                 <button class="button edit-button" name="editAccountButton">Edytuj</button>
                             </a>
                             <button class="button delete-button" name="deleteAccountButton">Usuń</button>
