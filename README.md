@@ -7,10 +7,10 @@ Funkcjonalności:
 - filtrowanie listy produktów po nazwie, kategorii
 - sortowanie listy produktów po cenie
 - dodanie produktu do koszyka
+- usuwanie produktu z koszyka
 - złożenie zamówienia z produktów w koszyku
 - przeglądanie złożonych zamówień
 - przesyłanie wiadomości o złożonym zamówieniu na email konta
-  - złożenie zamówienia
 - (sprzedawca) dodanie nowego produktu
 - (sprzedawca) edycja istniejącego produktu
 - (sprzedawca) usunięcie produktu
