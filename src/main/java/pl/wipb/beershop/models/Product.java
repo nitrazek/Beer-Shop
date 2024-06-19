@@ -2,7 +2,6 @@ package pl.wipb.beershop.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 import pl.wipb.beershop.models.utils.BaseModel;
 import pl.wipb.beershop.models.utils.ProductCategory;
 

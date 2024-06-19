@@ -2,6 +2,7 @@ package pl.wipb.beershop.services;
 
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
+import java.math.BigDecimal;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.wipb.beershop.dao.interfaces.AccountDao;
@@ -102,11 +103,14 @@ public class ProductsService {
         accountDao.saveOrUpdate(account);
     }
 
-    public void createOrUpdateProduct() {
-
+    public void createOrUpdateProduct(String name, ProductCategory category, BigDecimal price) {
+        Product product = new Product(name, category, price);
+        productDao.saveOrUpdate(product);
     }
 
-    public void deleteProduct() {
-
+    public void deleteProduct(Long productId) {
+        Optional<Product> optProduct = productDao.findById(productId);
+        if(optProduct.isEmpty()) return;
+        productDao.delete(optProduct.get());
     }
 }
