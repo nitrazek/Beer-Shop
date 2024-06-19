@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.wipb.beershop.models.Product;
 import pl.wipb.beershop.models.utils.ProductCategory;
+import pl.wipb.beershop.services.CartService;
 import pl.wipb.beershop.services.ProductsService;
 
 import java.io.IOException;
@@ -23,12 +24,14 @@ public class ProductsController extends HttpServlet {
     private static final Logger log = LogManager.getLogger();
     @EJB
     private ProductsService prodService;
+    @EJB
+    private CartService cartService;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         String login = (session != null) ? (String) session.getAttribute("login") : null;
-        int cartProductSize = prodService.getCartProductSize(login);
+        int cartProductSize = cartService.getCartProductSize(login);
         if(cartProductSize < 0) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
@@ -54,19 +57,28 @@ public class ProductsController extends HttpServlet {
         Map<String,String> fieldToError = new HashMap<>();
         List<Product> productList = prodService.getFilteredProductList(request.getParameterMap(), fieldToError);
 
-        if(!fieldToError.isEmpty() || productList == null) {
-            request.setAttribute("errors", fieldToError);
-            request.setAttribute("productList", request.getAttribute("productList"));
-            request.setAttribute("cartProductSize", request.getAttribute("cartProductSize"));
-            request.setAttribute("categoryList", request.getAttribute("categoryList"));
+        HttpSession session = request.getSession(false);
+        String login = (session != null) ? (String) session.getAttribute("login") : null;
+        int cartProductSize = cartService.getCartProductSize(login);
+        if(cartProductSize < 0) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        ProductCategory[] categoryList = prodService.getCategoryList();
 
+        if(!fieldToError.isEmpty() || productList == null) {
+            productList = prodService.getProductList();
+            request.setAttribute("errors", fieldToError);
+            request.setAttribute("productList", productList);
+            request.setAttribute("cartProductSize", cartProductSize);
+            request.setAttribute("categoryList", categoryList);
             request.getRequestDispatcher("/WEB-INF/views/shop/products.jsp").forward(request, response);
             return;
         }
 
         request.setAttribute("productList", productList);
-        request.setAttribute("cartProductSize", request.getAttribute("cartProductSize"));
-        request.setAttribute("categoryList", request.getAttribute("categoryList"));
+        request.setAttribute("cartProductSize", cartProductSize);
+        request.setAttribute("categoryList", categoryList);
         request.getRequestDispatcher("/WEB-INF/views/shop/products.jsp").forward(request, response);
     }
 
@@ -75,13 +87,21 @@ public class ProductsController extends HttpServlet {
         String login = (session != null) ? (String) session.getAttribute("login") : null;
 
         Map<String,String> fieldToError = new HashMap<>();
-        prodService.addProductToCart(login, request.getParameterMap(), fieldToError);
+        cartService.addProductToCart(login, request.getParameterMap(), fieldToError);
+
+        int cartProductSize = cartService.getCartProductSize(login);
+        if(cartProductSize < 0) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+        ProductCategory[] categoryList = prodService.getCategoryList();
 
         if(!fieldToError.isEmpty()) {
+            List<Product> productList = prodService.getProductList();
             request.setAttribute("errors", fieldToError);
-            request.setAttribute("productList", request.getAttribute("productList"));
-            request.setAttribute("cartProductSize", request.getAttribute("cartProductSize"));
-            request.setAttribute("categoryList", request.getAttribute("categoryList"));
+            request.setAttribute("productList", productList);
+            request.setAttribute("cartProductSize", cartProductSize);
+            request.setAttribute("categoryList", categoryList);
 
             request.getRequestDispatcher("/WEB-INF/views/shop/products.jsp").forward(request, response);
             return;

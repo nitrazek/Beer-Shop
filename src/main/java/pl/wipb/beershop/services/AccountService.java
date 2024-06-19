@@ -2,24 +2,73 @@ package pl.wipb.beershop.services;
 
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
+
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import pl.wipb.beershop.dao.interfaces.AccountDao;
 import pl.wipb.beershop.models.Account;
 import pl.wipb.beershop.models.utils.AccountRole;
+import pl.wipb.beershop.utils.AccountFilterOptions;
+import pl.wipb.beershop.utils.RequestParsers;
 
 @Singleton
 public class AccountService {
     @EJB
     private AccountDao accountDao;
-  
-    public void createOrUpdateAccount(String login, String password, String email, AccountRole role) {
-        Account account = new Account(login, password, email, role);
+    @EJB
+    private RequestParsers parsers;
+
+    public Account getAccount(Long id) {
+        return accountDao.findById(id).orElse(null);
+    }
+
+    public List<Account> getAllAccounts() {
+        return accountDao.findAll(); // our application is very safe, for real
+    }
+
+    public List<Account> getFilteredAccountList(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {
+        AccountFilterOptions filterOptions = parsers.parseAccountFilterParams(parameterMap, fieldToError);
+        if(!fieldToError.isEmpty())
+            return null;
+
+        List<Account> originalAccountList = getAllAccounts();
+
+        return originalAccountList.stream().filter(a ->
+                        a.getLogin().contains(filterOptions.getLogin()) &&
+                                a.getEmail().contains(filterOptions.getEmail()) &&
+                                (!filterOptions.isClientRole() || a.getRole().compareTo(AccountRole.CLIENT) == 0) &&
+                                (!filterOptions.isSellerRole() || a.getRole().compareTo(AccountRole.SELLER) == 0) &&
+                                (!filterOptions.isAdminRole() || a.getRole().compareTo(AccountRole.ADMIN) == 0))
+                .collect(Collectors.toList());
+    }
+
+    public void addOrEditAccount(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {
+        Account account = parsers.parseAddEditAccountParams(parameterMap, fieldToError);
+        if (!fieldToError.isEmpty())
+            return;
+
+        if (account.getPassword().isEmpty() && account.getId() != null) {
+            Optional<Account> accountFromDb = accountDao.findById(account.getId());
+            if(accountFromDb.isEmpty()) {
+                fieldToError.put("id", "Konto o podanym id nie istnieje.");
+                return;
+            }
+            account.setPassword(accountFromDb.get().getPassword());
+        }
+
         accountDao.saveOrUpdate(account);
     }
 
-    public void deleteAccount(Long accountId) {
+    public void deleteAccount(Long accountId, Map<String,String> fieldToError) {
         Optional<Account> optAccount = accountDao.findById(accountId);
-        if(optAccount.isEmpty()) return;
+        if(optAccount.isEmpty()) {
+            fieldToError.put("param", "Account o podanym id nie istnieje.");
+            return;
+        }
+
         accountDao.delete(optAccount.get());
     }
 }

@@ -14,7 +14,9 @@ import pl.wipb.beershop.models.utils.ProductCategory;
 import pl.wipb.beershop.services.ProductsService;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet("/seller/products")
 public class SellerProductsController extends HttpServlet {
@@ -40,6 +42,56 @@ public class SellerProductsController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter("filterButton") != null)
+            doFilterRequest(request, response);
+        else if (request.getParameter("deleteProductButton") != null)
+            doDeleteProductButton(request, response);
+    }
 
+    private void doFilterRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String,String> fieldToError = new HashMap<>();
+        List<Product> productList = prodService.getFilteredProductList(request.getParameterMap(), fieldToError);
+        ProductCategory[] categoryList = prodService.getCategoryList();
+
+        if(!fieldToError.isEmpty() || productList == null) {
+            productList = prodService.getProductList();
+            request.setAttribute("errors", fieldToError);
+            request.setAttribute("productList", productList);
+            request.setAttribute("categoryList", categoryList);
+            request.getRequestDispatcher("/WEB-INF/views/seller-panel/products.jsp").forward(request, response);
+            return;
+        }
+
+        request.setAttribute("productList", productList);
+        request.setAttribute("categoryList", categoryList);
+        request.getRequestDispatcher("/WEB-INF/views/seller-panel/products.jsp").forward(request, response);
+    }
+
+    private void doDeleteProductButton(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Map<String,String> fieldToError = new HashMap<>();
+
+        String productIdParam = request.getParameter("productId");
+        if (productIdParam != null && productIdParam.matches("\\d+")) {
+            Long productId = Long.parseLong(productIdParam);
+            prodService.deleteProduct(productId, fieldToError);
+        } else {
+            fieldToError.put("param", "Id produktu jest nieprawidłowe.");
+        }
+
+        List<Product> productList = prodService.getProductList();
+        ProductCategory[] categoryList = prodService.getCategoryList();
+
+        if(!fieldToError.isEmpty()) {
+            request.setAttribute("errors", fieldToError);
+            request.setAttribute("productList", productList);
+            request.setAttribute("categoryList", categoryList);
+
+            request.getRequestDispatcher("/WEB-INF/views/seller-panel/products.jsp").forward(request, response);
+            return;
+        }
+
+        request.setAttribute("productList", productList);
+        request.setAttribute("categoryList", categoryList);
+        request.getRequestDispatcher("/WEB-INF/views/seller-panel/products.jsp").forward(request, response);
     }
 }

@@ -8,4 +8,10 @@ import java.io.Serializable;
 public class CartProductId implements Serializable {
     private Long accountId;
     private Long productId;
+
+    public CartProductId() {}
+    public CartProductId(Long accountId, Long productId) {
+        this.accountId = accountId;
+        this.productId = productId;
+    }
 }

@@ -33,9 +33,10 @@ public class ShopFilter extends HttpFilter {
         HttpSession session = request.getSession(false);
         String login = (session != null) ? (String) session.getAttribute("login") : null;
 
-        if(authService.verifyAccount(login))
+        if(authService.verifyAccount(login)) {
+            request.setAttribute("navRole", authService.getAccountRole(login));
             chain.doFilter(request, response);
-        else {
+        } else {
             if (login != null) session.removeAttribute("login");
             response.sendRedirect(request.getContextPath() + "/login");
         }

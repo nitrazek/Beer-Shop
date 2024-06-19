@@ -5,8 +5,8 @@ Funkcjonalności:
 - autentykacja/autoryzacja (klient/sprzedawca/admin)
 - przeglądanie listy produktów (nazwa, kategoria, cena)
 - filtrowanie listy produktów po nazwie, kategorii
-- sortowanie listy produktów po cenie
 - dodanie produktu do koszyka
+- zmiana ilości danego produktu w koszyku
 - usuwanie produktu z koszyka
 - złożenie zamówienia z produktów w koszyku
 - przeglądanie złożonych zamówień

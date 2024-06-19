@@ -23,10 +23,7 @@ public class InitialDataLoader {
     @PersistenceContext(name = "PU")
     private EntityManager em;
 
-    @PostConstruct
-    public void loadInitialData() {
-        log.debug("loadInitialData() started");
-
+    private void deleteExistingData() {
         em.createQuery("DELETE FROM CartProduct").executeUpdate();
         log.debug("Cleared CART_PRODUCT table");
 
@@ -41,57 +38,46 @@ public class InitialDataLoader {
 
         em.createQuery("DELETE FROM Product").executeUpdate();
         log.debug("Cleared PRODUCT table");
+    }
 
-        Account account1 = new Account("admin", "admin", "admin@test.com", AccountRole.ADMIN);
-        log.debug("Created account1: {}", account1.toString());
+    private void insertNewData(Object... objects) {
+        for(Object object : objects) {
+            log.debug("Created new {}: {}", object.getClass(), object.toString());
+            em.persist(object);
+        }
+    }
 
-        Account account2 = new Account("dealer1", "dealer1", "dealer1@test.com", AccountRole.DEALER);
-        log.debug("Created account2: {}", account2.toString());
+    @PostConstruct
+    public void loadInitialData() {
+        log.debug("loadInitialData() started");
 
-        Account account3 = new Account("client1", "client1", "client1@test.com", AccountRole.CLIENT);
-        log.debug("Created account3: {}", account3.toString());
-
-        Account account4 = new Account("client2", "client2", "client2@test.com", AccountRole.CLIENT);
-        log.debug("Created account4: {}", account4.toString());
-
-        em.persist(account1);
-        em.persist(account2);
-        em.persist(account3);
-        em.persist(account4);
-
-        Product product1 = new Product("Żywiec Jasne Pełne", ProductCategory.BEER, new BigDecimal("5.50"));
-        log.debug("Created product1: {}", product1.toString());
-
-        Product product2 = new Product("Tyskie Gronie", ProductCategory.BEER, new BigDecimal("4.80"));
-        log.debug("Created product2: {}", product2.toString());
-
-        Product product3 = new Product("Lech Premium", ProductCategory.BEER, new BigDecimal("4.90"));
-        log.debug("Created product3: {}", product3.toString());
-
-        Product product4 = new Product("Kuflowe Mocne", ProductCategory.BEER, new BigDecimal("5.30"));
-        log.debug("Created product4: {}", product4.toString());
-
-        Product product5 = new Product("Żubr", ProductCategory.BEER, new BigDecimal("4.70"));
-        log.debug("Created product5: {}", product5.toString());
-
-        em.persist(product1);
-        em.persist(product2);
-        em.persist(product3);
-        em.persist(product4);
-        em.persist(product5);
-
-        CartProduct cartProduct1 = new CartProduct(account1, product1, 2);
-        log.debug("Created cartProduct1: {}", cartProduct1.toString());
-
-        CartProduct cartProduct2 = new CartProduct(account1, product2, 1);
-        log.debug("Created cartProduct2: {}", cartProduct2.toString());
-
-        CartProduct cartProduct3 = new CartProduct(account1, product3, 1);
-        log.debug("Created cartProduct3: {}", cartProduct3.toString());
-
-        em.persist(cartProduct1);
-        em.persist(cartProduct2);
-        em.persist(cartProduct3);
+        deleteExistingData();
+        insertNewData(
+                new Account("admin", "admin", "admin@test.com", AccountRole.ADMIN),
+                new Account("seller1", "seller1", "seller1@test.com", AccountRole.SELLER),
+                new Account("client1", "client1", "client1@test.com", AccountRole.CLIENT),
+                new Account("client2", "client2", "client2@test.com", AccountRole.CLIENT),
+                new Product("Żywiec Męskie Spodnie", ProductCategory.BEER, new BigDecimal("5.50")),
+                new Product("Tyskie Grochy", ProductCategory.BEER, new BigDecimal("4.80")),
+                new Product("Lech Wodospad", ProductCategory.BEER, new BigDecimal("4.90")),
+                new Product("Piwo bezalkoholowe w Gumiakach", ProductCategory.BEER, new BigDecimal("6.90")),
+                new Product("Kuflowe Mega Mocne", ProductCategory.BEER, new BigDecimal("5.30")),
+                new Product("Żubr na Hulajnodze", ProductCategory.BEER, new BigDecimal("4.70")),
+                new Product("Kufel Świętego Graala", ProductCategory.BEER_GLASSWARE, new BigDecimal("25.99")),
+                new Product("Szklanka z Magnesem na Lodówkę", ProductCategory.BEER_GLASSWARE, new BigDecimal("19.99")),
+                new Product("Pokal z Wąsami", ProductCategory.BEER_GLASSWARE, new BigDecimal("22.49")),
+                new Product("Fermentor w Kształcie Słonia", ProductCategory.HOMEBREWING_EQUIPMENT, new BigDecimal("149.99")),
+                new Product("Kocioł do Gotowania Eliksirów", ProductCategory.HOMEBREWING_EQUIPMENT, new BigDecimal("249.99")),
+                new Product("Zestaw do Chmielenia Jabłek", ProductCategory.HOMEBREWING_EQUIPMENT, new BigDecimal("79.99")),
+                new Product("Otwieracz od Babci Halinki", ProductCategory.BEER_ACCESSORY, new BigDecimal("15.99")),
+                new Product("Podkładka pod Piwo z Jednorożcem", ProductCategory.BEER_ACCESSORY, new BigDecimal("9.99")),
+                new Product("Kapslownica z Kluczami od Domu", ProductCategory.BEER_ACCESSORY, new BigDecimal("45.99")),
+                new Product("Miarka do Piwa z Cytryną", ProductCategory.BEER_ACCESSORY, new BigDecimal("12.99")),
+                new Product("Koszulka z Rysunkiem Kota", ProductCategory.BEER_MERCHANDISE, new BigDecimal("29.99")),
+                new Product("Naklejki na Butelki z Alienem", ProductCategory.BEER_MERCHANDISE, new BigDecimal("7.99")),
+                new Product("Kufel z Włosami na Klacie", ProductCategory.BEER_MERCHANDISE, new BigDecimal("19.99")),
+                new Product("Brelok do Kluczy z Pikachu", ProductCategory.BEER_MERCHANDISE, new BigDecimal("5.99"))
+        );
 
         log.debug("loadInitialData() finished");
     }

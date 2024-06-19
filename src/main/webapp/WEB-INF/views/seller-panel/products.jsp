@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 <head>
@@ -16,7 +18,17 @@
 </head>
 <body>
 <header>
-    <i class='bx bx-beer'></i> eBrowarek
+    <div class="header-content">
+        <span><i class='bx bx-beer'></i> eBrowarek</span>
+        <nav>
+            <p><a href="${pageContext.request.contextPath}/shop/products"><i class='bx bx-shopping-bag'></i> Sklep</a>
+            </p>
+            <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel administratora</a>
+            </p>
+            <p><a href=""><i class='bx bx-log-out'></i> Wyloguj się</a></p>
+        </nav>
+    </div>
+
 </header>
 <div class="container">
     <div class="header2">
@@ -26,21 +38,48 @@
     </div>
 
     <div class="filters">
-        <div class="header">Filtry</div>
-        <div class="input-group">
-            <div class="input-field">
-                <div class="column-title">Nazwa produktu</div>
-                <input class="text-input" type="text">
-            </div>
-            <div class="input-field">
-                <div class="column-title">Kategoria</div>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" name="role" value="piwo"> Piwo</label>
+        <form method="post">
+            <div class="header">Filtry</div>
+            <div class="input-group">
+                <div class="input-field">
+                    <div class="column-title">Nazwa produktu</div>
+                    <input class="text-input" type="text">
                 </div>
+                <div class="input-field">
+                    <div class="column-title">Kategoria</div>
+                    <div class="checkbox-group">
+                        <c:forEach items="${categoryList}" var="productCategory">
+                            <label><input type="radio" name="category" value="${fn:escapeXml(productCategory)}"> ${fn:escapeXml(productCategory)}
+                            </label>
+                        </c:forEach>
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    <div class="column-title">Minimalna cena produktu (PLN)</div>
+                    <input class="text-input" type="number" name="minValue" step="0.01" min="0" max="10000">
+                </div>
+
+                <div class="input-field">
+                    <div class="column-title">Maksymalna cena produktu (PLN)</div>
+                    <input class="text-input" type="number" name="maxValue" step="0.01" min="0" max="10000">
+                </div>
+
             </div>
-        </div>
-        <div class="footer"><button>Szukaj produktu</button></div>
+
+            <c:if test="${not empty errors.param}">
+                <td><span class="error">${errors.param}</span></td>
+            </c:if>
+
+            <div class="footer">
+                <button name="filterButton" type="submit">Szukaj produktu</button>
+            </div>
+        </form>
+        <div class="footer"><a href="${pageContext.request.contextPath}/seller/editor">
+            <button name="addProductButton">Dodaj nowy produkt</button>
+        </a></div>
     </div>
+
 
     <div class="user-list">
         <table>
@@ -53,24 +92,22 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>Żubr</td>
-                <td>Piwo</td>
-                <td>4.50 zł</td>
-                <td>
-                    <button class="button edit-button">Edytuj</button>
-                    <button class="button delete-button">Usuń</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Tyskie</td>
-                <td>Piwo</td>
-                <td>4.99 zł</td>
-                <td>
-                    <button class="button edit-button">Edytuj</button>
-                    <button class="button delete-button">Usuń</button>
-                </td>
-            </tr>
+            <c:forEach items="${productList}" var="product">
+                <tr>
+                    <td>${product.name}</td>
+                    <td>${product.category}</td>
+                    <td>${product.price} zł</td>
+                    <td>
+                        <a href="${pageContext.request.contextPath}/seller/editor?productId=${product.id}">
+                            <button class="button edit-button" name="editAccountButton">Edytuj</button>
+                        </a>
+                        <form method="post">
+                            <input type="hidden" name="productId" value="${product.id}">
+                            <button type="submit" name="deleteProductButton" class="button delete-button">Usuń</button>
+                        </form>
+                    </td>
+                </tr>
+            </c:forEach>
             </tbody>
         </table>
     </div>

@@ -34,25 +34,34 @@ public class Account extends BaseModel<Long> {
     @Enumerated(EnumType.STRING)
     private AccountRole role;
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     @ToString.Exclude
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<CartProduct> cartProducts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     @ToString.Exclude
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
     private List<Order> orders = new ArrayList<>();
 
     public Account() {}
-
     public Account(String login, String password) {
-        this.login = login;
-        this.password = password;
+        this(null, login, password, null, AccountRole.CLIENT);
     }
-
+    public Account(String login, String password, String email) {
+        this(null, login, password, email, AccountRole.CLIENT);
+    }
     public Account(String login, String password, String email, AccountRole role) {
+        this(null, login, password, email, role);
+    }
+    public Account(Long id, String login, String password, String email, AccountRole role) {
         this.login = login;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.id = id;
+    }
+
+    public void addCartProduct(CartProduct cartProduct) {
+        cartProducts.add(cartProduct);
+        cartProduct.setAccount(this);
     }
 }

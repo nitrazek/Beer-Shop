@@ -2,6 +2,7 @@ package pl.wipb.beershop.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import pl.wipb.beershop.models.utils.BaseModel;
 
 import java.math.BigDecimal;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "\"ORDER\"")
 @NamedQueries({
-        @NamedQuery(name = "Order.findByAccount", query = "SELECT o FROM Order o WHERE o.account = :accountId")
+        @NamedQuery(name = "Order.findByAccount", query = "SELECT o FROM Order o WHERE o.account.id = :accountId")
 })
 public class Order extends BaseModel<Long> {
     @Id
@@ -27,9 +28,11 @@ public class Order extends BaseModel<Long> {
     @Column(nullable = false)
     private BigDecimal totalPrice = new BigDecimal("0.0");
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     private Account account;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "order")
     private List<OrderProduct> orderProducts = new ArrayList<>();
 

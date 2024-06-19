@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+body {
+    margin: 0;
+    font-family: Poppins;
+    background: url("../resources/tlo2.jpg") no-repeat center;
+    background-size: cover;
+}
+
+.container {
+    margin: auto;
+    max-width: 90vw;
+    text-align: center;
+    padding-top: 45px;
+    min-width: 1200px;
+}
+header {
+    background-color: rgb(29, 29, 29);
+    color: white;
+    padding: 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content i.bx-beer {
+    margin-right: 10px;
+}
+
+header .a {
+    color: #FFF;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+header .a:hover {
+    color: #777777;
+    text-decoration: underline;
+}
+
+nav {
+    display: flex;
+    gap: 20px;
+    margin-right: 35px;
+}
+
+nav p {
+    margin: 0;
+}
+
+nav p a {
+    color: #FFF;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+nav p a:hover {
+    color: #777;
+    text-decoration: underline;
+}
+
+nav p a i {
+    margin-right: 5px;
+}
+
+a {
+    color: #000;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+a:hover {
+    color: #FFF;
+    text-decoration: underline;
+}
+
+.header2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    font-size: x-large;
+    font-weight: 600;
+    position: relative;
+}
+
+.header2 .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0; /* Ensure no additional margins are applied */
+}
+
+.header2 .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto; /* Push it to the far right */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.order-header {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.order-details {
+    display: none;
+    margin-top: 10px;
+}

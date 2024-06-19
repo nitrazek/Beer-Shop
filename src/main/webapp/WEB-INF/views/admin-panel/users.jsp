@@ -17,7 +17,17 @@
 </head>
 <body>
 <header>
-    <i class='bx bx-beer'></i> eBrowarek
+    <div class="header-content">
+        <span><i class='bx bx-beer'></i> eBrowarek</span>
+        <nav>
+            <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel sprzedawcy</a>
+            </p>
+            <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel administratora</a>
+            </p>
+            <p><a href=""><i class='bx bx-log-out'></i> Wyloguj się</a></p>
+        </nav>
+    </div>
+
 </header>
 <div class="container">
     <div class="header2">
@@ -42,27 +52,28 @@
                     <div class="column-title">Rola</div>
                     <div class="checkbox-group">
                         <label><input type="checkbox" name="adminRole" value="ADMIN"> Administrator</label>
-                        <label><input type="checkbox" name="dealerRole" value="DEALER"> Sprzedawca</label>
+                        <label><input type="checkbox" name="sellerRole" value="SELLER"> Sprzedawca</label>
                         <label><input type="checkbox" name="clientRole" value="CLIENT"> Klient</label>
                     </div>
                 </div>
             </div>
             <c:if test="${not empty errors.param}">
-            <td><span class="error">${errors.param}</span></td>
+                <td><span class="error">${errors.param}</span></td>
             </c:if>
             <div class="footer">
                 <button name="filterButton">Szukaj użytkownika</button>
             </div>
-            <div class="footer"><a href="${pageContext.request.contextPath}/admin/editor">
-                <button name="addAccountButton">Dodaj nowego użytkownika</button>
-            </a></div>
         </form>
+        <div class="footer"><a href="${pageContext.request.contextPath}/admin/editor">
+            <button name="addAccountButton">Dodaj nowego użytkownika</button>
+        </a></div>
     </div>
 
     <div class="user-list">
         <table>
             <thead>
             <tr>
+                <th>Id</th>
                 <th>Nazwa użytkownika</th>
                 <th>Email</th>
                 <th>Rola</th>
@@ -72,15 +83,19 @@
             <tbody>
             <c:forEach items="${accountList}" var="account">
                 <tr>
+                    <td>${account.id}</td>
                     <td>${account.login}</td>
                     <td>${account.email}</td>
                     <td>${account.role}</td>
                     <td>
                         <c:if test="${account.role != 'ADMIN'}">
-                            <a href="${pageContext.request.contextPath}/admin/editor?userId=${account.id}">
+                            <a href="${pageContext.request.contextPath}/admin/editor?accountId=${account.id}">
                                 <button class="button edit-button" name="editAccountButton">Edytuj</button>
                             </a>
-                            <button class="button delete-button" name="deleteAccountButton">Usuń</button>
+                            <form method="post">
+                                <input type="hidden" name="accountId" value="${account.id}">
+                                <button class="button delete-button" name="deleteAccountButton">Usuń</button>
+                            </form>
                         </c:if>
                     </td>
                 </tr>

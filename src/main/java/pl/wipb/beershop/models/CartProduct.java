@@ -14,6 +14,7 @@ public class CartProduct extends BaseModel<CartProductId> {
     @EmbeddedId
     private CartProductId id;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("accountId")
     private Account account;
@@ -27,7 +28,9 @@ public class CartProduct extends BaseModel<CartProductId> {
 
     public CartProduct() {}
 
-    public CartProduct(Account account, Product product) { this(account, product, 1); }
+    public CartProduct(Account account, Product product) {
+        this(account, product, 1);
+    }
 
     public CartProduct(Account account, Product product, Integer amount) {
         this.account = account;

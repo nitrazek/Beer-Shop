@@ -29,30 +29,6 @@ public class AuthenticationService {
     @EJB
     private RequestParsers parsers;
 
-    public Account getAccount(Long id) {
-        return accountDao.findById(id).orElse(null);
-    }
-
-    public List<Account> getAllAccounts() {
-        return accountDao.findAll(); // our application is very safe, for real
-    }
-
-    public List<Account> getFilteredAccountList(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {
-        AccountFilterOptions filterOptions = parsers.parseAccountFilterParams(parameterMap, fieldToError);
-        if(!fieldToError.isEmpty())
-            return null;
-
-        List<Account> originalAccountList = getAllAccounts();
-
-        return originalAccountList.stream().filter(a ->
-                a.getLogin().contains(filterOptions.getLogin()) &&
-                a.getEmail().contains(filterOptions.getEmail()) &&
-                (!filterOptions.isClientRole() || a.getRole().compareTo(AccountRole.CLIENT) == 0) &&
-                (!filterOptions.isDealerRole() || a.getRole().compareTo(AccountRole.DEALER) == 0) &&
-                (!filterOptions.isAdminRole() || a.getRole().compareTo(AccountRole.ADMIN) == 0))
-                .collect(Collectors.toList());
-    }
-
     public Account handleLogin(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {
         Account account = parsers.parseLoginParams(parameterMap, fieldToError);
         if (!fieldToError.isEmpty())
@@ -107,7 +83,7 @@ public class AuthenticationService {
         }
 
         Optional<Account> account = accountDao.findByLogin(login);
-        return account.map(value -> value.getRole().equals(AccountRole.DEALER)).orElse(false);
+        return account.map(value -> value.getRole().equals(AccountRole.SELLER)).orElse(false);
 
     }
 
@@ -118,5 +94,14 @@ public class AuthenticationService {
 
         Optional<Account> account = accountDao.findByLogin(login);
         return account.map(value -> value.getRole().equals(AccountRole.ADMIN)).orElse(false);
+    }
+
+    public AccountRole getAccountRole(String login) {
+        if (login == null) {
+            return null;
+        }
+
+        Optional<Account> account = accountDao.findByLogin(login);
+        return account.map(Account::getRole).orElse(null);
     }
 }

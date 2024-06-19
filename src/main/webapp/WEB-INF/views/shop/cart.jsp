@@ -13,54 +13,20 @@
     <title>Koszyk</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/cart.css">
     <!--  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet"> -->
-
-    <script>
-        function updateTotal() {
-            let items = document.querySelectorAll('.cart-item:not(.total)');
-            let totalPrice = 0;
-
-            items.forEach(item => {
-                let priceElement = item.querySelector('.item-price');
-                let quantityElement = item.querySelector('.item-quantity input');
-                let itemTotalPriceElement = item.querySelector('.item-total-price');
-                if (priceElement && quantityElement && itemTotalPriceElement) {
-                    let price = parseFloat(priceElement.dataset.price);
-                    let quantity = parseInt(quantityElement.value);
-                    if (!isNaN(price) && !isNaN(quantity)) {
-                        let itemTotalPrice = price * quantity;
-                        totalPrice += itemTotalPrice;
-                        itemTotalPriceElement.innerText = itemTotalPrice.toFixed(2) + ' PLN';
-                    }
-                }
-            });
-
-            document.getElementById('total-price').innerText = totalPrice.toFixed(2) + ' PLN';
-        }
-
-        function removeItem(event) {
-            let item = event.target.closest('.cart-item');
-            if (item) {
-                item.remove();
-                updateTotal();
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.item-quantity input').forEach(input => {
-                input.addEventListener('change', updateTotal);
-            });
-
-            document.querySelectorAll('.item-remove').forEach(button => {
-                button.addEventListener('click', removeItem);
-            });
-
-            updateTotal();
-        });
-    </script>
 </head>
 <body>
 <header>
-    <i class='bx bx-beer'></i> eBrowarek
+    <div class="header-content">
+        <span><i class='bx bx-beer'></i> eBrowarek</span>
+        <nav>
+            <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel sprzedawcy</a>
+            </p>
+            <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel administratora</a>
+            </p>
+            <p><a href=""><i class='bx bx-log-out'></i> Wyloguj się</a></p>
+        </nav>
+    </div>
+
 </header>
 <div class="container">
     <div class="header2">
@@ -74,14 +40,24 @@
             <div class="cart-item">
                 <div class="item-info">
                     <div class="item-name">${cartProduct.product.name}</div>
-                    <div class="item-price" data-price="${cartProduct.product.price}">Cena: ${cartProduct.product.price} PLN</div>
+                    <div class="item-price" data-price="${cartProduct.product.price}">
+                        Cena: ${cartProduct.product.price}
+                        PLN
+                    </div>
                 </div>
-                <div class="item-remove">USUŃ Z KOSZYKA</div>
-                <div class="item-quantity">
-                    <span>Ilość:</span>
-                    <input type="number" value=${cartProduct.amount} min="1">
-                </div>
-                <div class="item-total-price">0.00 PLN</div>
+                <form method="post">
+                    <input type="hidden" name="productId" value="${cartProduct.product.id}">
+                    <button class="item-remove" name="removeProductButton">USUŃ Z KOSZYKA</button>
+                </form>
+                <form method="post">
+                    <div class="item-quantity">
+                        <input type="hidden" name="productId" value="${cartProduct.product.id}">
+                        <span>Ilość:</span>
+                        <input type="number" name="quantity" value=${cartProduct.amount} min="1"
+                               onchange="this.form.submit()">
+                    </div>
+                </form>
+                <div class="item-total-price">${cartProduct.amount * cartProduct.product.price} PLN</div>
             </div>
         </c:forEach>
         <div class="cart-item total">
@@ -89,12 +65,19 @@
                 <div class="item-name total-price">RAZEM</div>
             </div>
             <div class="total-price">
-                <span id="total-price">0.00 PLN</span>
+                <span id="total-price">${totalPrice} PLN</span>
             </div>
         </div>
     </div>
-    <a href="${pageContext.request.contextPath}/shop/products"><button>Kontynuuj zakupy</button></a>
-    <button>Złóż zamówienie</button>
+    <c:if test="${not empty errors.param}">
+        <td><span class="error">BŁĄD: ${errors.param} <br/></span></td>
+    </c:if>
+    <a href="${pageContext.request.contextPath}/shop/products">
+        <button>Kontynuuj zakupy</button>
+    </a>
+    <form method="post">
+        <button name="placeOrder">Złóż zamówienie</button>
+    </form>
 
 </div>
 

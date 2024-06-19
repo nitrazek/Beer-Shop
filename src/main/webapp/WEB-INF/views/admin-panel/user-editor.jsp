@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>Dodaj/edytuj użytkownika</title>
@@ -26,31 +27,54 @@
     <div class="wrapper">
         <div class="input-group">
             <div class="input-field">
-                <div class="column-title">Nazwa użytkownika</div>
-                <input class="text-input" value="${account.login}" type="text"/>
-                <div class="column-title">Email</div>
-                <input class="text-input" value="${account.email}" type="text"/>
-                <div class="column-title">Hasło</div>
-                <input class="text-input" type="password"/>
-                <div class="column-title">Powtórz hasło</div>
-                <input class="text-input" type="password"/>
-                <div class="column-title">Rola</div>
-                <div class="radio-group">
-                    <label><input type="radio" name="role" value="Sprzedawca" id="sprzedawca-radio"> Sprzedawca</label><br/>
-                    <label><input type="radio" name="role" value="Klient" id="klient-radio"> Klient</label>
-                </div>
-                <div class="footer"><button>Zapisz</button></div>
-                <div class="footer"><a href="${pageContext.request.contextPath}/admin/users"><button>Anuluj</button></a></div>
+                <form method="post">
+                    <c:if test="${not empty errors.id}">
+                        <td><span class="error">BŁĄD: ${errors.id} <br/></span></td>
+                    </c:if>
+                    <input type="hidden" name="accountId" value="${account.id}">
+                    <div class="column-title">Nazwa użytkownika</div>
+                    <input class="text-input" name="accountLogin" value="${account.login}" type="text"/>
+                    <c:if test="${not empty errors.login}">
+                        <td><span class="error">BŁĄD: ${errors.name} <br/></span></td>
+                    </c:if>
+                    <div class="column-title">Email</div>
+                    <input class="text-input" name="accountEmail" value="${account.email}" type="text"/>
+                    <c:if test="${not empty errors.email}">
+                        <td><span class="error">BŁĄD: ${errors.name} <br/></span></td>
+                    </c:if>
+                    <div class="column-title">Hasło</div>
+                    <input class="text-input" name="accountPassword" type="password"/>
+                    <div class="column-title">Powtórz hasło</div>
+                    <input class="text-input" name="accountRetypedPassword" type="password"/>
+                    <c:if test="${not empty errors.password}">
+                        <td><span class="error">BŁĄD: ${errors.password} <br/></span></td>
+                    </c:if>
+                    <div class="column-title">Rola</div>
+                    <div class="radio-group">
+                        <label><input type="radio" name="accountRole" value="SELLER" id="sprzedawca-radio">
+                            Sprzedawca</label><br/>
+                        <label><input type="radio" name="accountRole" value="CLIENT" id="klient-radio"> Klient</label>
+                    </div>
+                    <c:if test="${not empty errors.role}">
+                        <td><span class="error">BŁĄD: ${errors.role} <br/></span></td>
+                    </c:if>
+                    <div class="footer">
+                        <button>Zapisz</button>
+                    </div>
+                </form>
+                <div class="footer"><a href="${pageContext.request.contextPath}/admin/users">
+                    <button>Anuluj</button>
+                </a></div>
             </div>
         </div>
     </div>
 
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         var role = '${account.role}';
 
-        if (role === 'DEALER') {
+        if (role === 'SELLER') {
             document.getElementById('sprzedawca-radio').checked = true;
         } else if (role === 'CLIENT') {
             document.getElementById('klient-radio').checked = true;

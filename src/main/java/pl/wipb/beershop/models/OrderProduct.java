@@ -2,6 +2,7 @@ package pl.wipb.beershop.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import pl.wipb.beershop.models.utils.BaseModel;
 import pl.wipb.beershop.models.utils.OrderProductId;
 
@@ -12,6 +13,7 @@ public class OrderProduct extends BaseModel<OrderProductId> {
     @EmbeddedId
     private OrderProductId id;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("orderId")
     private Order order;

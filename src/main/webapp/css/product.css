@@ -11,14 +11,10 @@ body {
     margin: auto;
     max-width: 90vw;
     text-align: center;
-    padding-top: 10px;
+    padding-top: 45px;
+    min-width: 1200px;
 }
 
-header {
-    background-color: rgb(29, 29, 29);
-    color: white;
-    padding: 20px;
-}
 
 .header2 {
     display: flex;
@@ -55,6 +51,14 @@ header {
     cursor: pointer;
 }
 
+header {
+    background-color: rgb(29, 29, 29);
+    color: white;
+    padding: 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+}
 
 .header-content {
     display: flex;
@@ -66,9 +70,21 @@ header {
     margin-right: 10px;
 }
 
+header .a {
+    color: #FFF;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+header .a:hover {
+    color: #777777;
+    text-decoration: underline;
+}
+
 nav {
     display: flex;
     gap: 20px;
+    margin-right: 35px;
 }
 
 nav p {
@@ -110,6 +126,8 @@ a:hover {
     grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     align-items: center;
+    padding-bottom: 40px;
+    min-width: 1200px;
 }
 
 .listProduct .product {
@@ -117,20 +135,22 @@ a:hover {
     padding: 20px;
     border-radius: 20px;
     backdrop-filter: blur(30px);
+    height: 32vh;
+    min-height: 300px;
+    width: 15vw;
+    min-width: 250px;
 }
 
 .listProduct .product h2 {
     font-weight: 600;
     font-size: large;
     color: rgb(29, 29, 29);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .price {
     letter-spacing: 2px;
     font-size: small;
     color: rgb(29, 29, 29);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .listProduct .quantity {
@@ -178,7 +198,6 @@ a:hover {
     font-weight: 600;
     font-size: x-large;
     color: rgb(29, 29, 29);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 
@@ -245,6 +264,7 @@ button {
     justify-content: center;
     display: block;
     text-align: center;
+    margin: 0 20px 20px 20px;
 }
 
 .column {
