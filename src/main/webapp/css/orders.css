@@ -14,6 +14,43 @@ body {
     padding-top: 45px;
     min-width: 1200px;
 }
+
+
+.header2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    font-size: x-large;
+    font-weight: 600;
+    position: relative;
+}
+
+.header2 .title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0; /* Ensure no additional margins are applied */
+}
+
+.header2 .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto; /* Push it to the far right */
+}
+
+.hidden-input {
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    outline: none;
+    width: 2em;
+    text-align: center;
+    cursor: pointer;
+}
+
 header {
     background-color: rgb(29, 29, 29);
     color: white;
@@ -82,57 +119,32 @@ a:hover {
     text-decoration: underline;
 }
 
-.header2 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 0;
-    font-size: x-large;
-    font-weight: 600;
-    position: relative;
-}
-
-.header2 .title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0; /* Ensure no additional margins are applied */
-}
-
-.header2 .right {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    margin-left: auto; /* Push it to the far right */
-}
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
-
-h1 {
-    text-align: center;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.order-header {
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.order-details {
+.hidden {
     display: none;
-    margin-top: 10px;
+}
+
+
+button {
+    padding: 10px;
+    width: 300px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.75);
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.error {
+    color: red;
+    font-weight: 700;
+    justify-content: center;
+    display: block;
+    text-align: center;
+    margin: 0 20px 20px 20px;
 }

@@ -17,19 +17,26 @@
 
 </head>
 <body>
+
 <header>
     <div class="header-content">
         <span><i class='bx bx-beer'></i> eBrowarek</span>
         <nav>
             <p><a href="${pageContext.request.contextPath}/shop/products"><i class='bx bx-shopping-bag'></i> Sklep</a>
             </p>
-            <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel administratora</a>
+            <p><a href="${pageContext.request.contextPath}/shop/orders"><i class='bx bx-list-check'></i> Historia
+                zamówień</a>
             </p>
-            <p><a href=""><i class='bx bx-log-out'></i> Wyloguj się</a></p>
+            <c:if test="${navRole=='ADMIN'}">
+                <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel
+                    administratora</a>
+                </p>
+            </c:if>
+            <p><a href="${pageContext.request.contextPath}/logout"><i class='bx bx-log-out'></i> Wyloguj się</a></p>
         </nav>
     </div>
-
 </header>
+
 <div class="container">
     <div class="header2">
         <div class="left">
@@ -49,7 +56,8 @@
                     <div class="column-title">Kategoria</div>
                     <div class="checkbox-group">
                         <c:forEach items="${categoryList}" var="productCategory">
-                            <label><input type="radio" name="category" value="${fn:escapeXml(productCategory)}"> ${fn:escapeXml(productCategory)}
+                            <label><input type="radio" name="category"
+                                          value="${fn:escapeXml(productCategory)}"> ${fn:escapeXml(productCategory)}
                             </label>
                         </c:forEach>
                     </div>

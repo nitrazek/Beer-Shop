@@ -15,8 +15,21 @@
 </head>
 <body>
 <header>
-    <i class='bx bx-beer'></i> eBrowarek
+    <div class="header-content">
+        <span><i class='bx bx-beer'></i> eBrowarek</span>
+        <nav>
+            <p><a href="${pageContext.request.contextPath}/shop/products"><i class='bx bx-shopping-bag'></i> Sklep</a>
+            </p>
+            <p><a href="${pageContext.request.contextPath}/shop/orders"><i class='bx bx-list-check'></i> Historia
+                zamówień</a>
+            </p>
+            <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel sprzedawcy</a>
+            </p>
+            <p><a href="${pageContext.request.contextPath}/logout"><i class='bx bx-log-out'></i> Wyloguj się</a></p>
+        </nav>
+    </div>
 </header>
+
 <div class="container">
     <div class="header2">
         <div class="left">

@@ -19,11 +19,20 @@
     <div class="header-content">
         <span><i class='bx bx-beer'></i> eBrowarek</span>
         <nav>
-            <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel sprzedawcy</a>
+            <p><a href="${pageContext.request.contextPath}/shop/orders"><i class='bx bx-list-check'></i> Historia
+                zamówień</a>
             </p>
-            <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel administratora</a>
-            </p>
-            <p><a href=""><i class='bx bx-log-out'></i> Wyloguj się</a></p>
+            <c:if test="${navRole != 'CLIENT'}">
+                <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel
+                    sprzedawcy</a>
+                </p>
+            </c:if>
+            <c:if test="${navRole=='ADMIN'}">
+                <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel
+                    administratora</a>
+                </p>
+            </c:if>
+            <p><a href="${pageContext.request.contextPath}/logout"><i class='bx bx-log-out'></i> Wyloguj się</a></p>
         </nav>
     </div>
 

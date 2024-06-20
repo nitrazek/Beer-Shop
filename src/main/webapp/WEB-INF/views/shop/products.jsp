@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -14,13 +14,19 @@
     <div class="header-content">
         <span><i class='bx bx-beer'></i> eBrowarek</span>
         <nav>
-            <p><a href="${pageContext.request.contextPath}/shop/orders"><i class='bx bx-list-check' ></i> Historia zamówień</a>
+            <p><a href="${pageContext.request.contextPath}/shop/orders"><i class='bx bx-list-check'></i> Historia
+                zamówień</a>
             </p>
-
-            <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel sprzedawcy</a>
-            </p>
-            <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel administratora</a>
-            </p>
+            <c:if test="${navRole != 'CLIENT'}">
+                <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel
+                    sprzedawcy</a>
+                </p>
+            </c:if>
+            <c:if test="${navRole=='ADMIN'}">
+                <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel
+                    administratora</a>
+                </p>
+            </c:if>
             <p><a href="${pageContext.request.contextPath}/logout"><i class='bx bx-log-out'></i> Wyloguj się</a></p>
         </nav>
     </div>
