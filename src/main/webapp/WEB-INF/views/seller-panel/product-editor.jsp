@@ -17,6 +17,24 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
 </head>
 <body>
+
+<script>
+    var categoryNames = {
+        'BEER': 'Piwo',
+        'BEER_GLASSWARE': 'Szkło do piwa',
+        'HOMEBREWING_EQUIPMENT': 'Sprzęt do warzenia piwa',
+        'BEER_ACCESSORY': 'Akcesoria do piwa',
+        'BEER_MERCHANDISE': 'Inne'
+    };
+
+    function setCategoryLabel(productCategory) {
+        var labelId = "categoryLabel-" + productCategory;
+        var labelElement = document.getElementById(labelId);
+        if (labelElement) {
+            labelElement.textContent = categoryNames[productCategory];
+        }
+    }
+</script>
 <header>
     <div class="header-content">
         <span><i class='bx bx-beer'></i> eBrowarek</span>
@@ -57,15 +75,27 @@
                         <td><span class="error">BŁĄD: ${errors.name} <br/></span></td>
                     </c:if>
                     <div class="column-title">Kategoria</div>
-                    <c:forEach items="${categoryList}" var="productCategory">
-                        <div class="checkbox-container">
-                            <input type="radio" name="productCategory" value="${fn:escapeXml(productCategory)}">
-                            <label>${productCategory}</label>
-                        </div>
-                    </c:forEach>
+                    <form method="post">
+                        <c:forEach items="${categoryList}" var="productCategory">
+                            <div class="radio-container">
+                                <input type="radio" id="category-${fn:escapeXml(productCategory)}"
+                                       name="productCategory" value="${fn:escapeXml(productCategory)}"
+                                       <c:if test="${productCategory eq product.category}">checked</c:if>
+                                >
+                                <label for="category-${fn:escapeXml(productCategory)}"
+                                       id="categoryLabel-${fn:escapeXml(productCategory)}"></label>
+                                <script>
+                                    setCategoryLabel("${fn:escapeXml(productCategory)}");
+                                </script>
+                            </div>
+                        </c:forEach>
+
+                    </form>
                     <c:if test="${not empty errors.category}">
-                        <td><span class="error">BŁĄD: ${errors.category} <br/></span></td>
+                        <span class="error">BŁĄD: ${errors.category}</span>
                     </c:if>
+
+
                     <div class="column-title">Cena</div>
                     <input class="price-input" type="number" step="0.01" min="0" value="${product.price}"
                            name="productPrice"> <span

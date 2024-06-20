@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 <head>
@@ -16,6 +17,13 @@
 
 </head>
 <body>
+<script>
+    var roleNames = {
+        'ADMIN': 'Administrator',
+        'SELLER': 'Sprzedawca',
+        'CLIENT': 'Klient'
+    };
+</script>
 <header>
     <div class="header-content">
         <span><i class='bx bx-beer'></i> eBrowarek</span>
@@ -89,7 +97,7 @@
                     <td>${account.id}</td>
                     <td>${account.login}</td>
                     <td>${account.email}</td>
-                    <td>${account.role}</td>
+                    <td><script>document.write(roleNames['${fn:escapeXml(account.role)}']);</script></td>
                     <td>
                         <c:if test="${account.role != 'ADMIN'}">
                             <a href="${pageContext.request.contextPath}/admin/editor?accountId=${account.id}">

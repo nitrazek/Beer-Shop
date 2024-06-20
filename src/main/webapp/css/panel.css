@@ -13,6 +13,7 @@ body {
     text-align: center;
     padding-top: 10px;
     padding-bottom: 40px;
+    min-width: 1100px;
 }
 
 header {
@@ -205,16 +206,24 @@ table th input {
 
 .checkbox-group {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
 }
 
-.checkbox-group label {
-    margin-right: 10px;
-    font-size: 18px;
+
+.radio-container {
+    display: block;
+    margin-bottom: 10px;
 }
 
-input[type="checkbox"] {
-    transform: scale(1.2);
+.radio-container input[type="radio"] {
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.radio-container label {
+    vertical-align: middle;
 }
 
 .error {
@@ -224,3 +233,4 @@ input[type="checkbox"] {
     display: block;
     text-align: center;
 }
+

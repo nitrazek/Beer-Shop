@@ -17,7 +17,23 @@
 
 </head>
 <body>
+<script>
+    var categoryNames = {
+        'BEER': 'Piwo',
+        'BEER_GLASSWARE': 'Szkło do piwa',
+        'HOMEBREWING_EQUIPMENT': 'Sprzęt do warzenia piwa',
+        'BEER_ACCESSORY': 'Akcesoria do piwa',
+        'BEER_MERCHANDISE': 'Inne'
+    };
 
+    function setCategoryLabel(productCategory) {
+        var labelId = "categoryLabel-" + productCategory;
+        var labelElement = document.getElementById(labelId);
+        if (labelElement) {
+            labelElement.textContent = categoryNames[productCategory];
+        }
+    }
+</script>
 <header>
     <div class="header-content">
         <span><i class='bx bx-beer'></i> eBrowarek</span>
@@ -52,16 +68,6 @@
                     <div class="column-title">Nazwa produktu</div>
                     <input class="text-input" type="text">
                 </div>
-                <div class="input-field">
-                    <div class="column-title">Kategoria</div>
-                    <div class="checkbox-group">
-                        <c:forEach items="${categoryList}" var="productCategory">
-                            <label><input type="radio" name="category"
-                                          value="${fn:escapeXml(productCategory)}"> ${fn:escapeXml(productCategory)}
-                            </label>
-                        </c:forEach>
-                    </div>
-                </div>
 
                 <div class="input-field">
                     <div class="column-title">Minimalna cena produktu (PLN)</div>
@@ -73,6 +79,19 @@
                     <input class="text-input" type="number" name="maxValue" step="0.01" min="0" max="10000">
                 </div>
 
+            </div>
+
+            <div class="input-field">
+                <div class="column-title">Kategoria</div>
+                <div class="checkbox-group">
+                    <c:forEach items="${categoryList}" var="productCategory">
+                        <input type="radio" name="category" value="${fn:escapeXml(productCategory)}">
+                        <label id="categoryLabel-${fn:escapeXml(productCategory)}"></label>
+                        <script>
+                            setCategoryLabel("${fn:escapeXml(productCategory)}");
+                        </script>
+                    </c:forEach>
+                </div>
             </div>
 
             <c:if test="${not empty errors.param}">
@@ -103,7 +122,7 @@
             <c:forEach items="${productList}" var="product">
                 <tr>
                     <td>${product.name}</td>
-                    <td>${product.category}</td>
+                    <td><script>document.write(categoryNames['${fn:escapeXml(product.category)}']);</script></td>
                     <td>${product.price} zł</td>
                     <td>
                         <a href="${pageContext.request.contextPath}/seller/editor?productId=${product.id}">

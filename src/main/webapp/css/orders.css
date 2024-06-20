@@ -32,14 +32,14 @@ body {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    margin: 0; /* Ensure no additional margins are applied */
+    margin: 0;
 }
 
 .header2 .right {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-left: auto; /* Push it to the far right */
+    margin-left: auto;
 }
 
 .hidden-input {

@@ -17,7 +17,6 @@ public class JpaProductDao extends JpaGenericDao<Product, Long> implements Produ
   @Override
   public List<Product> findAll() {
     List<Product> products = super.findAll();
-    log.debug("Products: {}", products);
     return products;
   }
 }

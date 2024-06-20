@@ -3,6 +3,7 @@ package pl.wipb.beershop.services;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Singleton;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,14 +36,19 @@ public class AccountService {
             return null;
 
         List<Account> originalAccountList = getAllAccounts();
+        List<AccountRole> selectedRoles = new ArrayList<>();
+        if (filterOptions.isClientRole())
+            selectedRoles.add(AccountRole.CLIENT);
+        if (filterOptions.isSellerRole())
+            selectedRoles.add(AccountRole.SELLER);
+        if (filterOptions.isAdminRole())
+            selectedRoles.add(AccountRole.ADMIN);
 
         return originalAccountList.stream().filter(a ->
                         a.getLogin().contains(filterOptions.getLogin()) &&
-                                a.getEmail().contains(filterOptions.getEmail()) &&
-                                (!filterOptions.isClientRole() || a.getRole().compareTo(AccountRole.CLIENT) == 0) &&
-                                (!filterOptions.isSellerRole() || a.getRole().compareTo(AccountRole.SELLER) == 0) &&
-                                (!filterOptions.isAdminRole() || a.getRole().compareTo(AccountRole.ADMIN) == 0))
-                .collect(Collectors.toList());
+                        a.getEmail().contains(filterOptions.getEmail()) &&
+                        (selectedRoles.isEmpty() || selectedRoles.contains(a.getRole())))
+                    .collect(Collectors.toList());
     }
 
     public void addOrEditAccount(Map<String, String[]> parameterMap, Map<String,String> fieldToError) {

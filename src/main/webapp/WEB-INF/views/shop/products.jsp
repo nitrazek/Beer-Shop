@@ -8,37 +8,46 @@
     <title>eBrowarek - Lista produktów</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/product.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
+    <script>
+        var categoryNames = {
+            'BEER': 'Piwo',
+            'BEER_GLASSWARE': 'Szkło do piwa',
+            'HOMEBREWING_EQUIPMENT': 'Sprzęt do warzenia piwa',
+            'BEER_ACCESSORY': 'Akcesoria do piwa',
+            'BEER_MERCHANDISE': 'Inne'
+        };
+
+        function setCategoryLabel(productCategory) {
+            var labelId = "categoryLabel-" + productCategory;
+            var labelElement = document.getElementById(labelId);
+            if (labelElement) {
+                labelElement.textContent = categoryNames[productCategory];
+            }
+        }
+    </script>
 </head>
 <body>
 <header>
     <div class="header-content">
         <span><i class='bx bx-beer'></i> eBrowarek</span>
         <nav>
-            <p><a href="${pageContext.request.contextPath}/shop/orders"><i class='bx bx-list-check'></i> Historia
-                zamówień</a>
-            </p>
+            <p><a href="${pageContext.request.contextPath}/shop/orders"><i class='bx bx-list-check'></i> Historia zamówień</a></p>
             <c:if test="${navRole != 'CLIENT'}">
-                <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel
-                    sprzedawcy</a>
-                </p>
+                <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel sprzedawcy</a></p>
             </c:if>
             <c:if test="${navRole=='ADMIN'}">
-                <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel
-                    administratora</a>
-                </p>
+                <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel administratora</a></p>
             </c:if>
             <p><a href="${pageContext.request.contextPath}/logout"><i class='bx bx-log-out'></i> Wyloguj się</a></p>
         </nav>
     </div>
-
 </header>
 <div class="container">
     <div class="header2">
         <div class="title">Lista produktów</div>
         <div class="right">
             <form method="post">
-                <p><a href="${pageContext.request.contextPath}/shop/cart"> <i class='bx bx-cart'><fmt:formatNumber
-                        value="${cartProductSize}" type="number"/></i></a></p>
+                <p><a href="${pageContext.request.contextPath}/shop/cart"> <i class='bx bx-cart'><fmt:formatNumber value="${cartProductSize}" type="number"/></i></a></p>
             </form>
         </div>
     </div>
@@ -80,7 +89,10 @@
                             <c:forEach items="${categoryList}" var="productCategory">
                                 <div class="checkbox-container">
                                     <input type="radio" name="category" value="${fn:escapeXml(productCategory)}">
-                                    <label>${productCategory}</label>
+                                    <label id="categoryLabel-${fn:escapeXml(productCategory)}"></label>
+                                    <script>
+                                        setCategoryLabel("${fn:escapeXml(productCategory)}");
+                                    </script>
                                 </div>
                             </c:forEach>
                         </div>
@@ -93,12 +105,15 @@
         </div>
     </div>
 
+    <c:if test="${productList.stream().count()==0}">
+        Brak produktów
+    </c:if>
 
     <div class="listProduct">
         <c:forEach items="${productList}" var="product">
             <div class="product">
                 <h2>${product.name}</h2>
-                <p class="price">Kategoria:<br/> ${product.category}</p>
+                <p class="price">Kategoria:<br/> <script>document.write(categoryNames['${fn:escapeXml(product.category)}']);</script></p>
                 <p class="price">Cena: ${product.price} PLN</p>
                 <div class="quantity">
                     <form method="post">
@@ -118,9 +133,6 @@
         var filters = document.getElementById("filters");
         filters.style.display = (filters.style.display === "block") ? "none" : "block";
     }
-
-
 </script>
-
 </body>
 </html>

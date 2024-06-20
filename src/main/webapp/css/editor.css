@@ -12,6 +12,7 @@ body {
     max-width: 35vw;
     text-align: center;
     padding-top: 10px;
+    min-width: 220px;
 }
 
 header {
@@ -188,4 +189,10 @@ input[type="radio"] {
     display: block;
     text-align: center;
     margin: 20px;
+}
+
+.radio-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
 }

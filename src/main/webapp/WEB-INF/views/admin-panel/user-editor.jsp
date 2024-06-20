@@ -48,12 +48,12 @@
                     <div class="column-title">Nazwa użytkownika</div>
                     <input class="text-input" name="accountLogin" value="${account.login}" type="text"/>
                     <c:if test="${not empty errors.login}">
-                        <td><span class="error">BŁĄD: ${errors.name} <br/></span></td>
+                        <td><span class="error">BŁĄD: ${errors.login} <br/></span></td>
                     </c:if>
                     <div class="column-title">Email</div>
                     <input class="text-input" name="accountEmail" value="${account.email}" type="text"/>
                     <c:if test="${not empty errors.email}">
-                        <td><span class="error">BŁĄD: ${errors.name} <br/></span></td>
+                        <td><span class="error">BŁĄD: ${errors.email} <br/></span></td>
                     </c:if>
                     <div class="column-title">Hasło</div>
                     <input class="text-input" name="accountPassword" type="password"/>
