@@ -76,7 +76,8 @@ public class InitialDataLoader {
                 new Product("Koszulka z Rysunkiem Kota", ProductCategory.BEER_MERCHANDISE, new BigDecimal("29.99")),
                 new Product("Naklejki na Butelki z Alienem", ProductCategory.BEER_MERCHANDISE, new BigDecimal("7.99")),
                 new Product("Kufel z Włosami na Klacie", ProductCategory.BEER_MERCHANDISE, new BigDecimal("19.99")),
-                new Product("Brelok do Kluczy z Pikachu", ProductCategory.BEER_MERCHANDISE, new BigDecimal("5.99"))
+                new Product("Brelok do Kluczy z Pikachu", ProductCategory.BEER_MERCHANDISE, new BigDecimal("5.99")),
+                new Product("Kwiaty piwonie", ProductCategory.BEER_MERCHANDISE, new BigDecimal("10.20"))
         );
 
         log.debug("loadInitialData() finished");
