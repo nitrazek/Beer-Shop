@@ -12,15 +12,9 @@ import org.apache.logging.log4j.Logger;
 import pl.wipb.beershop.models.Order;
 
 import pl.wipb.beershop.services.OrdersService;
-import pl.wipb.beershop.services.ProductsService;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet("/shop/orders")
 public class OrdersController extends HttpServlet {
