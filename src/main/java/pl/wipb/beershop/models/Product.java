@@ -27,12 +27,15 @@ public class Product extends BaseModel<Long> {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    public Product() {}
-
+    public Product() {
+        this(null, null, ProductCategory.BEER, null);
+    }
+    public Product(String name, BigDecimal price) {
+        this(null, name, ProductCategory.BEER, price);
+    }
     public Product(String name, ProductCategory category, BigDecimal price) {
         this(null, name, category, price);
     }
-
     public Product(Long id, String name, ProductCategory category, BigDecimal price) {
         this.id = id;
         this.name = name;
