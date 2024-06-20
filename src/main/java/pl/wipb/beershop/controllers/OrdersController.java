@@ -15,6 +15,9 @@ import pl.wipb.beershop.services.OrdersService;
 import pl.wipb.beershop.services.ProductsService;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,5 +42,9 @@ public class OrdersController extends HttpServlet {
 
         request.setAttribute("orderList", orderList);
         request.getRequestDispatcher("/WEB-INF/views/shop/orders.jsp").forward(request, response);
+    }
+
+    private Date convertToDateViaInstant(LocalDateTime dateToConvert) {
+        return java.util.Date.from(dateToConvert.atZone(ZoneId.systemDefault()).toInstant());
     }
 }

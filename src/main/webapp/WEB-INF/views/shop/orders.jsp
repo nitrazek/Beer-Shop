@@ -18,36 +18,58 @@
             </p>
             <c:if test="${navRole != 'CLIENT'}">
                 <p><a href="${pageContext.request.contextPath}/seller/products"><i class='bx bx-store'></i> Panel
-                    sprzedawcy</a>
-                </p>
+                    sprzedawcy</a></p>
             </c:if>
             <c:if test="${navRole=='ADMIN'}">
                 <p><a href="${pageContext.request.contextPath}/admin/users"><i class='bx bx-crown'></i> Panel
-                    administratora</a>
-                </p>
+                    administratora</a></p>
             </c:if>
             <p><a href="${pageContext.request.contextPath}/logout"><i class='bx bx-log-out'></i> Wyloguj się</a></p>
         </nav>
     </div>
-
 </header>
 
 <div class="container">
     <div class="header2">
         <div class="title">Historia zamówień</div>
     </div>
-    <ul id="orders">
+    <div class="orders-container">
+        <c:if test="${orderList.stream().count()==0}">
+            Brak zamówień
+        </c:if>
         <c:forEach items="${orderList}" var="order">
-            <li>
-                <div class="order-header" onclick="toggleDetails(this)">${order.id}</div>
-                <div class="order-details">
-                    <p>${order.creationDate}</p>
-                    <p>${order.totalPrice}</p>
-                    <p>Ilość zamówionych produktów: ${order.orderProducts.stream().count()}</p>
+            <div class="order">
+                <button class="order-header" onclick="toggleDetails(this)">Zamówienie #${order.id} (${order.totalPrice}
+                    PLN)
+                </button>
+                <div class="order-details" style="display:none;">
+                    <p>Data złożenia zamówienia:
+                        <c:set var="formattedDate" value="${fn:substring(order.creationDate, 0, 19)}"/>
+                        <fmt:parseDate value="${formattedDate}" var="parsedDate" pattern="yyyy-MM-dd'T'HH:mm:ss"/>
+                        <fmt:formatDate value="${parsedDate}" pattern="dd-MM-yyyy HH:mm:ss"/></p>
+                    <p>Zamówione produkty:</p>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Nazwa produktu</th>
+                            <th>Ilość</th>
+                            <th>Cena łączna</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${order.orderProducts}" var="cartProduct">
+                            <tr>
+                                <td>${cartProduct.product.name} (${cartProduct.product.price} PLN/szt)</td>
+                                <td>${cartProduct.amount}</td>
+                                <td>${cartProduct.product.price * cartProduct.amount} PLN</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
-            </li>
+            </div>
         </c:forEach>
-    </ul>
+    </div>
     <script>
         function toggleDetails(element) {
             var details = element.nextElementSibling;
@@ -58,9 +80,6 @@
             }
         }
     </script>
-
 </div>
-
-
 </body>
 </html>

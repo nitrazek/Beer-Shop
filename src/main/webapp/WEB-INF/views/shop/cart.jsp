@@ -12,7 +12,7 @@
 <head>
     <title>Koszyk</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/cart.css">
-    <!--  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet"> -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel="stylesheet">
 </head>
 <body>
 <header>
@@ -77,10 +77,10 @@
                 <span id="total-price">${totalPrice} PLN</span>
             </div>
         </div>
-    </div>
     <c:if test="${not empty errors.param}">
         <td><span class="error">BŁĄD: ${errors.param} <br/></span></td>
     </c:if>
+    </div>
     <a href="${pageContext.request.contextPath}/shop/products">
         <button>Kontynuuj zakupy</button>
     </a>
