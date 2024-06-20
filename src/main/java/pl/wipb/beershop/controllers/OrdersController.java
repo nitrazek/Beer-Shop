@@ -43,8 +43,4 @@ public class OrdersController extends HttpServlet {
         request.setAttribute("orderList", orderList);
         request.getRequestDispatcher("/WEB-INF/views/shop/orders.jsp").forward(request, response);
     }
-
-    private Date convertToDateViaInstant(LocalDateTime dateToConvert) {
-        return java.util.Date.from(dateToConvert.atZone(ZoneId.systemDefault()).toInstant());
-    }
 }
