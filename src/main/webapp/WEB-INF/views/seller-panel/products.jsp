@@ -66,7 +66,7 @@
             <div class="input-group">
                 <div class="input-field">
                     <div class="column-title">Nazwa produktu</div>
-                    <input class="text-input" type="text">
+                    <input name="contains" class="text-input" type="text">
                 </div>
 
                 <div class="input-field">

@@ -75,7 +75,6 @@
                         <td><span class="error">BŁĄD: ${errors.name} <br/></span></td>
                     </c:if>
                     <div class="column-title">Kategoria</div>
-                    <form method="post">
                         <c:forEach items="${categoryList}" var="productCategory">
                             <div class="radio-container">
                                 <input type="radio" id="category-${fn:escapeXml(productCategory)}"
@@ -89,12 +88,10 @@
                                 </script>
                             </div>
                         </c:forEach>
-
-                    </form>
+                    
                     <c:if test="${not empty errors.category}">
                         <span class="error">BŁĄD: ${errors.category}</span>
                     </c:if>
-
 
                     <div class="column-title">Cena</div>
                     <input class="price-input" type="number" step="0.01" min="0" value="${product.price}"
@@ -104,7 +101,7 @@
                         <td><span class="error">BŁĄD: ${errors.price} <br/></span></td>
                     </c:if>
                     <div class="footer">
-                        <button>Zapisz</button>
+                        <button type="submit">Zapisz</button>
                     </div>
                 </form>
                 <div class="footer"><a href="/beershop/seller/products">
