@@ -26,7 +26,6 @@ public class OrderProduct extends BaseModel<OrderProductId> {
     private Integer amount;
 
     public OrderProduct() {}
-
     public OrderProduct(Order order, Product product, Integer amount) {
         this.order = order;
         this.product = product;

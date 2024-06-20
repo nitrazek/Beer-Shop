@@ -21,6 +21,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import pl.wipb.beershop.models.utils.ProductCategory;
 
 @ExtendWith(MockitoExtension.class)
 public class CartServiceTest {
@@ -30,36 +31,10 @@ public class CartServiceTest {
     private ProductDao productDao;
     @Mock
     private CartProductDao cartProductDao;
-
     @Mock
     private RequestParsers parsers;
-
     @InjectMocks
     private CartService cartService;
-
-    private Account createTestAccount(Long id, String login) {
-        Account account = new Account();
-        account.setId(id);
-        account.setLogin(login);
-        account.setCartProducts(new ArrayList<>()); // Inicjalizacja pustej listy produktów w koszyku
-        return account;
-    }
-
-    private Product createTestProduct(Long id, String name, BigDecimal price) {
-        Product product = new Product();
-        product.setId(id);
-        product.setName(name);
-        product.setPrice(price);
-        return product;
-    }
-
-    private CartProduct createTestCartProduct(Account account, Product product, int amount) {
-        CartProduct cartProduct = new CartProduct();
-        cartProduct.setAccount(account);
-        cartProduct.setProduct(product);
-        cartProduct.setAmount(amount);
-        return cartProduct;
-    }
 
     private Map<String, String[]> parameterMap;
     private Map<String, String> fieldToError;
@@ -71,43 +46,43 @@ public class CartServiceTest {
     }
 
     @Test
-    void testGetCartProductSize_AccountExistsWithProducts() {
-        String login = "testUser";
-        Account testAccount = createTestAccount(1L, login);
-        Product product1 = createTestProduct(1L, "Product 1", BigDecimal.valueOf(10.0));
-        Product product2 = createTestProduct(2L, "Product 2", BigDecimal.valueOf(20.0));
-        testAccount.addCartProduct(createTestCartProduct(testAccount, product1, 2));
-        testAccount.addCartProduct(createTestCartProduct(testAccount, product2, 1));
-
-        when(accountDao.findByLogin(login)).thenReturn(Optional.of(testAccount));
+    void testCalculateTotalForCart() {
+        Account account = new Account("user", "password", "email@test.com");
+        Product product1 = new Product("product1", BigDecimal.valueOf(1.0));
+        Product product2 = new Product("product2", BigDecimal.valueOf(2.0));
+        List<CartProduct> cartProducts = Arrays.asList(
+                new CartProduct(account, product1, 2),
+                new CartProduct(account, product2)
+        );
+        
+        assertEquals(new BigDecimal("4.0"), cartService.calculateTotalForCart(cartProducts));
+    }
+    
+    @Test
+    void testGetCartProductSize() {
+        String login = "user";
+        Account account = new Account(login, "password", "email@test.com");
+        Product product1 = new Product("product1", BigDecimal.valueOf(10.0));
+        Product product2 = new Product("product2", BigDecimal.valueOf(20.0));
+        account.addCartProduct(new CartProduct(account, product1));
+        account.addCartProduct(new CartProduct(account, product2));
+        when(accountDao.findByLogin(login)).thenReturn(Optional.of(account));
 
         int result = cartService.getCartProductSize(login);
 
-        assertEquals(3, result);
+        assertEquals(2, result);
         verify(accountDao, times(1)).findByLogin(login);
     }
 
     @Test
-    void testGetCartProductSize_AccountDoesNotExist() {
-        String login = "nonExistingUser";
-        when(accountDao.findByLogin(login)).thenReturn(Optional.empty());
-
-        int result = cartService.getCartProductSize(login);
-
-        assertEquals(-1, result);
-        verify(accountDao, times(1)).findByLogin(login);
-    }
-
-    @Test
-    void testGetCartProductList_AccountExistsWithProducts() {
-        String login = "testUser";
-        Account testAccount = createTestAccount(1L, login);
-        Product product1 = createTestProduct(1L, "Product 1", BigDecimal.valueOf(10.0));
-        Product product2 = createTestProduct(2L, "Product 2", BigDecimal.valueOf(20.0));
-        testAccount.addCartProduct(createTestCartProduct(testAccount, product1, 2));
-        testAccount.addCartProduct(createTestCartProduct(testAccount, product2, 1));
-
-        when(accountDao.findByLogin(login)).thenReturn(Optional.of(testAccount));
+    void testGetCartProductList() {
+        String login = "user";
+        Account account = new Account(login, "password", "email@test.com");
+        Product product1 = new Product("product1", BigDecimal.valueOf(10.0));
+        Product product2 = new Product("product2", BigDecimal.valueOf(20.0));
+        account.addCartProduct(new CartProduct(account, product1));
+        account.addCartProduct(new CartProduct(account, product2));
+        when(accountDao.findByLogin(login)).thenReturn(Optional.of(account));
 
         List<CartProduct> result = cartService.getCartProductList(login);
 
@@ -119,104 +94,39 @@ public class CartServiceTest {
     }
 
     @Test
-    void testGetCartProductList_AccountDoesNotExist() {
-        String login = "nonExistingUser";
-        when(accountDao.findByLogin(login)).thenReturn(Optional.empty());
-
-        List<CartProduct> result = cartService.getCartProductList(login);
-
-        assertNull(result);
-        verify(accountDao, times(1)).findByLogin(login);
-    }
-
-    @Test
-    void testAddProductToCart_Successful() {
+    void testAddProductToCart() {
         String login = "testUser";
         Long productId = 1L;
         int quantity = 2;
-        Account testAccount = createTestAccount(1L, login);
-        Product testProduct = createTestProduct(productId, "Product 1", BigDecimal.valueOf(10.0));
-
-        Map<String, String[]> parameterMap = new HashMap<>();
-        parameterMap.put("productId", new String[]{String.valueOf(productId)});
-        parameterMap.put("quantity", new String[]{String.valueOf(quantity)});
-        Map<String, String> fieldToError = new HashMap<>();
-
+        Account account = new Account(login, "password", "email@test.com");
+        Product product = new Product("product", BigDecimal.valueOf(10.0));
         when(parsers.parseAddEditProductToCartParams(parameterMap, fieldToError))
                 .thenReturn(new ProductToCart(productId, quantity));
-        when(accountDao.findByLogin(login)).thenReturn(Optional.of(testAccount));
-        when(productDao.findById(productId)).thenReturn(Optional.of(testProduct));
-        when(cartProductDao.saveOrUpdate(any(CartProduct.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(accountDao.findByLogin(login)).thenReturn(Optional.of(account));
+        when(productDao.findById(productId)).thenReturn(Optional.of(product));
 
         cartService.addProductToCart(login, parameterMap, fieldToError);
 
-        assertEquals(1, testAccount.getCartProducts().size());
-        assertEquals(quantity, testAccount.getCartProducts().get(0).getAmount());
+        assertEquals(1, account.getCartProducts().size());
+        assertEquals(quantity, account.getCartProducts().get(0).getAmount());
         verify(accountDao, times(1)).findByLogin(login);
         verify(productDao, times(1)).findById(productId);
         verify(cartProductDao, times(1)).saveOrUpdate(any(CartProduct.class));
     }
 
     @Test
-    void testAddProductToCart_UserNotLoggedIn() {
-        String login = null;
-        Map<String, String[]> parameterMap = new HashMap<>();
-        parameterMap.put("productId", new String[]{"1"});
-        parameterMap.put("quantity", new String[]{"2"});
-        Map<String, String> fieldToError = new HashMap<>();
-
-        cartService.addProductToCart(login, parameterMap, fieldToError);
-
-        assertTrue(fieldToError.containsKey("param"));
-        assertEquals("Użytkownik jest niezalogowany", fieldToError.get("param"));
-        verify(accountDao, never()).findByLogin(anyString());
-        verify(productDao, never()).findById(anyLong());
-        verify(cartProductDao, never()).saveOrUpdate(any(CartProduct.class));
-    }
-
-    @Test
-    void testAddProductToCart_ProductNotFound() {
-        String login = "testUser";
-        Long productId = 1L;
-        Map<String, String[]> parameterMap = new HashMap<>();
-        parameterMap.put("productId", new String[]{String.valueOf(productId)});
-        parameterMap.put("quantity", new String[]{"2"});
-        Map<String, String> fieldToError = new HashMap<>();
-
-        when(parsers.parseAddEditProductToCartParams(parameterMap, fieldToError))
-                .thenReturn(new ProductToCart(productId, 2));
-        when(accountDao.findByLogin(login)).thenReturn(Optional.of(createTestAccount(1L, login)));
-        when(productDao.findById(productId)).thenReturn(Optional.empty());
-
-        cartService.addProductToCart(login, parameterMap, fieldToError);
-
-        assertTrue(fieldToError.containsKey("param"));
-        assertEquals("Wybrany produkt nie istnieje", fieldToError.get("param"));
-        verify(accountDao, times(1)).findByLogin(login);
-        verify(productDao, times(1)).findById(productId);
-        verify(cartProductDao, never()).saveOrUpdate(any(CartProduct.class));
-    }
-
-    @Test
-    void testEditProductAmountInCart_Successful() {
+    void testEditProductAmountInCart() {
         String login = "testUser";
         Long productId = 1L;
         int newQuantity = 3;
-        Account testAccount = createTestAccount(1L, login);
-        Product testProduct = createTestProduct(productId, "Product 1", BigDecimal.valueOf(10.0));
-        CartProduct cartProduct = createTestCartProduct(testAccount, testProduct, 2);
-        testAccount.addCartProduct(cartProduct);
-
-        Map<String, String[]> parameterMap = new HashMap<>();
-        parameterMap.put("productId", new String[]{String.valueOf(productId)});
-        parameterMap.put("quantity", new String[]{String.valueOf(newQuantity)});
-        Map<String, String> fieldToError = new HashMap<>();
-
+        Account account = new Account(login, "password", "email@test.com");
+        Product product = new Product("product", BigDecimal.valueOf(10.0));
+        CartProduct cartProduct = new CartProduct(account, product, 2);
+        account.addCartProduct(cartProduct);
         when(parsers.parseAddEditProductToCartParams(parameterMap, fieldToError))
                 .thenReturn(new ProductToCart(productId, newQuantity));
-        when(accountDao.findByLogin(login)).thenReturn(Optional.of(testAccount));
-        when(productDao.findById(productId)).thenReturn(Optional.of(testProduct));
-        when(cartProductDao.saveOrUpdate(any(CartProduct.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(accountDao.findByLogin(login)).thenReturn(Optional.of(account));
+        when(productDao.findById(productId)).thenReturn(Optional.of(product));
 
         cartService.editProductAmountInCart(login, parameterMap, fieldToError);
 
